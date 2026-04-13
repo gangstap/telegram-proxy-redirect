@@ -1,78 +1,29 @@
-name: Update Proxies
+name: Fetch Telegram Proxies
+
 on:
   schedule:
-    - cron: '*/10 * * * *'
-  workflow_dispatch:  # ⚡ Кнопка ручного запуска в Actions
+    - cron: '*/10 * * * *'  # Каждые 10 минут
+  workflow_dispatch:  # Ручной запуск
 
 jobs:
-  update:
+  fetch:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       
-      - name: Fetch Telegram Channel
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      
+      - name: Fetch proxies
         run: |
-          curl -s -L -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" \
-            -H "Accept: text/html,application/xhtml+xml" \
-            -H "Accept-Language: ru-RU,ru;q=0.9,en;q=0.8" \
-            "https://t.me/s/ProxyFree_Ru" > page.html || echo "Curl failed"
-            
-      - name: Parse & Save JSON
+          node fetch-proxies.js
+      
+      - name: Commit and push
         run: |
-          python3 << 'PYEOF'
-          import re, json, sys, os
-          
-          html_path = "page.html"
-          if not os.path.exists(html_path) or os.path.getsize(html_path) < 100:
-              print("⚠️ Page not loaded or empty. Using fallback.")
-              proxies = []
-          else:
-              with open(html_path, "r", encoding="utf-8") as f: html = f.read()
-              proxies = []
-              seen = set()
-              
-              for b in html.split('<div class="tgme_widget_message'):
-                  s = re.findall(r'Server\s*[:：]?\s*`?([a-zA-Z0-9.\-]+)`?', b)
-                  p = re.findall(r'Port\s*[:：]?\s*`?(\d+)`?', b)
-                  sc = re.findall(r'Secret\s*[:：]?\s*`?([A-Za-z0-9_+\-/=]+)`?', b)
-                  fl = re.findall(r'(🇷🇺|🇺🇸|🇩🇪|🇳🇱|🇫🇷|🇬🇧|🇫🇮|🇺🇦|🇵🇱|🇸🇬|🇯🇵|🇮🇳|🇨🇦|🇦🇺|🇧🇷|🇹🇷|🇮🇷|🇦🇪|🇮🇱|🇸🇪|🇳🇴|🇨🇿|🇱🇻|🇱🇹|🇪🇪|🇰🇿|🇺🇿|🇲🇩|🇧🇾|🇬🇪|🇦🇲|🇦🇿|🇻🇳|🇹🇭|🇲🇾)', b)
-                  
-                  for i in range(min(len(s), len(p), len(sc))):
-                      key = f"{s[i]}:{p[i]}"
-                      if key not in seen and s[i].lower() != "unknown" and len(s[i]) > 3:
-                          seen.add(key)
-                          proxies.append({
-                              "type": "MTProto", "server": s[i], "port": p[i], "secret": sc[i],
-                              "flag": fl[0] if fl else ("🇷🇺" if ".ru" in s[i] else "🌐"),
-                              "raw": f"tg://proxy?server={s[i]}&port={p[i]}&secret={sc[i]}"
-                          })
-          
-          # Фоллбэк если Telegram заблокировал или прокси не нашлись
-          if len(proxies) < 3:
-              for fb in [
-                  {"server":"185.173.36.38","port":"443","secret":"eeRighJJvXrFGRMCIMJdCQ","flag":"🇳🇱"},
-                  {"server":"91.107.255.159","port":"8443","secret":"eeNEgYdJvXrFGRMCIMJdCQ","flag":"🇩🇪"},
-                  {"server":"65.109.153.70","port":"8443","secret":"1320PuNyHw_LQKT_Y7XNJw","flag":"🇫🇮"},
-                  {"server":"51.15.246.20","port":"8443","secret":"eeNEgYdJvXrFGRMCIMJdCQ","flag":"🇫🇷"}
-              ]:
-                  k = f"{fb['server']}:{fb['port']}"
-                  if k not in seen:
-                      proxies.append({
-                          "type": "MTProto", **fb,
-                          "raw": f"tg://proxy?server={fb['server']}&port={fb['port']}&secret={fb['secret']}"
-                      })
-          
-          out = {"success": True, "count": len(proxies), "proxies": proxies[:15]}
-          with open("proxies.json", "w", encoding="utf-8") as f: json.dump(out, f, indent=2, ensure_ascii=False)
-          print(f"✅ Saved {len(proxies)} proxies to proxies.json")
-          PYEOF
-          
-      - name: Commit & Push
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
           git add proxies.json
-          git diff --quiet && git diff --staged --quiet || git commit -m "🤖 Update proxies $(date '+%Y-%m-%d %H:%M')"
+          git diff --quiet && git diff --staged --quiet || git commit -m "Update proxies $(date +%Y-%m-%d_%H:%M)"
           git push

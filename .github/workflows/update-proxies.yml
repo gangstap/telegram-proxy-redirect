@@ -1,8 +1,9 @@
 name: Update Proxies
 on:
   schedule:
-    - cron: '0 * * * *'  # Запуск каждый час
-  workflow_dispatch:     # Ручной запуск по кнопке
+    - cron: '*/10 * * * *'  # Запуск каждые 10 минут
+  workflow_dispatch:        # Ручной запуск по кнопке в Actions
+
 jobs:
   update:
     runs-on: ubuntu-latest
@@ -10,17 +11,20 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v3
+      
       - name: Fetch & Parse Telegram Channel
         run: |
-          curl -s -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64)" "https://t.me/s/ProxyFree_Ru" > page.html
+          curl -s -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" "https://t.me/s/ProxyFree_Ru" > page.html
           python3 << 'PYEOF'
-          import re, json
-          with open("page.html", "r", encoding="utf-8") as f: html = f.read()
-          
+          import re, json, sys
+          try:
+              with open("page.html", "r", encoding="utf-8") as f: html = f.read()
+          except Exception as e:
+              print(f"Error: {e}", file=sys.stderr); sys.exit(1)
+              
           proxies = []
           seen = set()
           
-          # Разбиваем на блоки сообщений
           blocks = html.split('<div class="tgme_widget_message')
           for b in blocks:
               servers = re.findall(r'Server\s*[:：]?\s*`?([a-zA-Z0-9.\-]+)`?', b)
@@ -55,14 +59,16 @@ jobs:
                           "raw": f"tg://proxy?server={fb['server']}&port={fb['port']}&secret={fb['secret']}"
                       })
           
+          # Сохраняем топ-20 (сайт покажет 12)
           with open("proxies.json", "w", encoding="utf-8") as f:
-              json.dump({"success": True, "count": len(proxies), "proxies": proxies}, f, indent=2, ensure_ascii=False)
-          print(f"✅ Saved {len(proxies)} proxies")
+              json.dump({"success": True, "count": len(proxies), "proxies": proxies[:20]}, f, indent=2, ensure_ascii=False)
+          print(f"✅ Saved {min(len(proxies), 20)} proxies")
           PYEOF
+          
       - name: Commit & Push
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add proxies.json
-          git commit -m "🤖 Auto-update proxies" || echo "No changes to commit"
+          git diff --quiet && git diff --staged --quiet || git commit -m "🤖 Auto-update proxies ($(date '+%H:%M'))"
           git push

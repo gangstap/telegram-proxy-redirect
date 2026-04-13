@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Telegram Proxy</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;600&display=swap');
+
+        * { box-sizing: border-box; }
+        body {
+            font-family: 'Ubuntu', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            text-align: center;
+            transition: background-color 0.3s, color 0.3s;
+            position: relative;
+        }
+        body.light {
+            background-color: #F5F5F5;
+            color: #333;
+        }
+        body.dark {
+            background-color: #161b22;
+            color: #ddd;
+        }
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('https://i.ibb.co/HqRwCSL/Pattern-Copy-1.png');
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+            opacity: 0.2;
+            pointer-events: none;
+            z-index: 1;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            max-width: 800px;
+            width: 90%;
+            position: relative;
+            z-index: 2;
+            margin: 40px auto;
+        }
+        h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        .sub {
+            font-size: 14px;
+            margin-bottom: 30px;
+            color: #888;
+        }
+        .proxy-button {
+            display: inline-block;
+            padding: 12px 24px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 50px;
+            text-decoration: none;
+            color: #ffffff;
+            background: #0b7285;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin: 5px 0;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .proxy-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+        .proxy-card {
+            background: rgba(0,0,0,0.3);
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 15px;
+            text-align: left;
+        }
+        .proxy-name {
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 5px;
+            color: #facc15;
+        }
+        .proxy-details {
+            font-size: 0.75rem;
+            font-family: monospace;
+            margin-bottom: 12px;
+            word-break: break-all;
+            opacity: 0.8;
+        }
+        .footer {
+            font-size: 0.7rem;
+            margin-top: 20px;
+            opacity: 0.6;
+        }
+        .button-redirect {
+            display: inline-block;
+            padding: 12px 24px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 50px;
+            text-decoration: none;
+            color: #ffffff;
+            background: #0b7285;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .button-redirect:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+<div class="container" id="app"></div>
+
+<script>
+    const language = navigator.language || navigator.userLanguage;
+    const isRussian = language.startsWith('ru');
+    
+    const proxies = [
+        { name: "Proxy 1: Unknown", server: "Unknown", port: 7443, secret: "AAAAAAAAAAAAAAAAAAAAABQ=" },
+        { name: "Proxy 2: mtproto-fi1.nolimited.space", server: "mtproto-fi1.nolimited.space", port: 443, secret: "ee297e5222c6724bb78c63cb38bc059eed6170692d6d6170732e79616e6465782e7275" },
+        { name: "Proxy 3: tggo.store", server: "tggo.store", port: 443, secret: "7uzWmAwONp7D1ujd83Bwkr50Z2dvLnN0b3Jl" },
+        { name: "Proxy 4: prxyhub.click", server: "prxyhub.click", port: 443, secret: "9f27410725ab8ab84ed17daf14723236" },
+        { name: "Proxy 5: akenai.tg", server: "akenai.tg", port: 853, secret: "ee54ce330e4690cc297d2b031ff3f288b06d742e616b656e61692e636c69636b" },
+        { name: "Proxy 6: 194.163.166.59", server: "194.163.166.59", port: 443, secret: "ee8441047534900cf5d61df8b4e07b7c78636c6f7564666c6172652e636f6d" },
+        { name: "Proxy 7: 207.180.203.24", server: "207.180.203.24", port: 443, secret: "7uBwJkgHh8uyF8nq_Te86VtzMy5hbWF6b25hd3MuY29t" },
+        { name: "Proxy 8: proxlet.site", server: "proxlet.site", port: 443, secret: "8d969eef6ecad3c29a3a629280e686cf" }
+    ];
+
+    function makeTgLink(server, port, secret) {
+        return `tg://proxy?server=${encodeURIComponent(server)}&port=${port}&secret=${encodeURIComponent(secret)}`;
+    }
+
+    const urlParams = new URLSearchParams(window.location.search);
+    let redirectTo = urlParams.get('redirect_to');
+
+    if (redirectTo) {
+        // Режим перенаправления
+        redirectTo = decodeURIComponent(redirectTo);
+        document.title = isRussian ? 'Перенаправление' : 'Redirect';
+        document.getElementById('app').innerHTML = `
+            <a id="redirectLink" class="button-redirect" href="${redirectTo}" target="_blank">${isRussian ? 'Нажмите сюда, чтобы продолжить' : 'Click here to proceed'}</a>
+            <p id="instructions" style="margin-top:20px;">${isRussian ? 'Переадресация произойдёт автоматически через 5 секунд. Если ничего не произошло, нажмите на кнопку выше.' : 'You will be redirected automatically within 5 seconds. If nothing happens, click the button above.'}</p>
+        `;
+        let redirectTimer = setTimeout(() => {
+            window.location.href = redirectTo;
+        }, 5000);
+        document.getElementById('redirectLink').addEventListener('click', () => clearTimeout(redirectTimer));
+    } else {
+        // Режим списка прокси
+        document.title = isRussian ? 'Список прокси' : 'Proxy list';
+        let html = `<h1>${isRussian ? 'Выберите прокси' : 'Choose proxy'}</h1><div class="sub">${isRussian ? 'Нажмите на кнопку — Telegram сам предложит подключить' : 'Click the button — Telegram will offer to connect'}</div>`;
+        proxies.forEach(proxy => {
+            const tgLink = makeTgLink(proxy.server, proxy.port, proxy.secret);
+            html += `
+                <div class="proxy-card">
+                    <div class="proxy-name">${proxy.name}</div>
+                    <div class="proxy-details">Server: ${proxy.server}<br>Port: ${proxy.port}<br>Secret: ${proxy.secret}</div>
+                    <a class="proxy-button" href="${tgLink}">⚡ ${isRussian ? 'Подключить' : 'Connect'}</a>
+                </div>
+            `;
+        });
+        html += `<div class="footer">${isRussian ? 'Если кнопка не работает, скопируйте ссылку и вставьте в Telegram вручную' : 'If the button does not work, copy the link and paste it into Telegram manually'}</div>`;
+        document.getElementById('app').innerHTML = html;
+    }
+
+    // Установка темы
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    } else {
+        document.body.classList.add('light');
+    }
+</script>
+</body>
+</html>

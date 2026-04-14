@@ -54,15 +54,14 @@
 <div class="container" id="app"><div class="loader"><div class="spinner"></div>Загрузка...</div></div>
 
 <script>
-    const WORKER_URL = "https://artproxz.github.io/telegram-proxy-redirect";
-    
+    // ✅ URL теперь указывает прямо на proxies.json
     const CONFIG = {
         WORKER_URL: "https://artproxz.github.io/telegram-proxy-redirect/proxies.json",
         REFRESH_MS: 600000,
         PING_INTERVAL: 15000,
         MAX_PROXIES: 12,
-        TIMER_KEY: "tg_tmr_v227",
-        USED_KEY: "tg_used_v227",
+        TIMER_KEY: "tg_tmr_v228",
+        USED_KEY: "tg_used_v228",
         FALLBACK: [
             {type:"MTProto",server:"185.173.36.38",port:"443",secret:"eeRighJJvXrFGRMCIMJdCQ",flag:"🇳🇱",raw:"tg://proxy?server=185.173.36.38&port=443&secret=eeRighJJvXrFGRMCIMJdCQ"},
             {type:"MTProto",server:"91.107.255.159",port:"8443",secret:"eeNEgYdJvXrFGRMCIMJdCQ",flag:"🇩🇪",raw:"tg://proxy?server=91.107.255.159&port=8443&secret=eeNEgYdJvXrFGRMCIMJdCQ"},
@@ -70,18 +69,22 @@
             {type:"MTProto",server:"51.15.246.20",port:"8443",secret:"eeNEgYdJvXrFGRMCIMJdCQ",flag:"🇫🇷",raw:"tg://proxy?server=51.15.246.20&port=8443&secret=eeNEgYdJvXrFGRMCIMJdCQ"},
             {type:"MTProto",server:"149.154.167.91",port:"8443",secret:"dd070b1b71f82167e279061e9b53f4f1",flag:"🇬🇧",raw:"tg://proxy?server=149.154.167.91&port=8443&secret=dd070b1b71f82167e279061e9b53f4f1"},
             {type:"MTProto",server:"149.154.167.103",port:"8443",secret:"dd070b1b71f82167e279061e9b53f4f1",flag:"🇬🇧",raw:"tg://proxy?server=149.154.167.103&port=8443&secret=dd070b1b71f82167e279061e9b53f4f1"},
-            {type:"MTProto",server:"149.154.167.92",port:"8443",secret:"dd070b1b71f82167e279061e9b53f4f1",flag:"🇬",raw:"tg://proxy?server=149.154.167.92&port=8443&secret=dd070b1b71f82167e279061e9b53f4f1"},
+            {type:"MTProto",server:"149.154.167.92",port:"8443",secret:"dd070b1b71f82167e279061e9b53f4f1",flag:"🇬🇧",raw:"tg://proxy?server=149.154.167.92&port=8443&secret=dd070b1b71f82167e279061e9b53f4f1"},
             {type:"MTProto",server:"149.154.167.100",port:"8443",secret:"dd070b1b71f82167e279061e9b53f4f1",flag:"🇬🇧",raw:"tg://proxy?server=149.154.167.100&port=8443&secret=dd070b1b71f82167e279061e9b53f4f1"},
             {type:"MTProto",server:"149.154.171.100",port:"8443",secret:"dd070b1b71f82167e279061e9b53f4f1",flag:"🇬🇧",raw:"tg://proxy?server=149.154.171.100&port=8443&secret=dd070b1b71f82167e279061e9b53f4f1"},
-            {type:"MTProto",server:"149.154.175.100",port:"8443",secret:"dd070b1b71f82167e279061e9b53f4f1",flag:"🇬",raw:"tg://proxy?server=149.154.175.100&port=8443&secret=dd070b1b71f82167e279061e9b53f4f1"},
-            {type:"MTProto",server:"149.154.175.102",port:"8443",secret:"dd070b1b71f82167e279061e9b53f4f1",flag:"🇬",raw:"tg://proxy?server=149.154.175.102&port=8443&secret=dd070b1b71f82167e279061e9b53f4f1"},
-            {type:"MTProto",server:"149.154.167.200",port:"8443",secret:"dd070b1b71f82167e279061e9b53f4f1",flag:"🇬",raw:"tg://proxy?server=149.154.167.200&port=8443&secret=dd070b1b71f82167e279061e9b53f4f1"}
+            {type:"MTProto",server:"149.154.175.100",port:"8443",secret:"dd070b1b71f82167e279061e9b53f4f1",flag:"🇬🇧",raw:"tg://proxy?server=149.154.175.100&port=8443&secret=dd070b1b71f82167e279061e9b53f4f1"},
+            {type:"MTProto",server:"149.154.175.102",port:"8443",secret:"dd070b1b71f82167e279061e9b53f4f1",flag:"🇬🇧",raw:"tg://proxy?server=149.154.175.102&port=8443&secret=dd070b1b71f82167e279061e9b53f4f1"},
+            {type:"MTProto",server:"149.154.167.200",port:"8443",secret:"dd070b1b71f82167e279061e9b53f4f1",flag:"🇬🇧",raw:"tg://proxy?server=149.154.167.200&port=8443&secret=dd070b1b71f82167e279061e9b53f4f1"}
         ]
     };
 
-    let state = { proxies: [], timer: null, pingTimer: null, usingFallback: false };
+    let state = { proxies: [], timer: null, pingTimer: null, usingFallback: false, serverNextUpdate: null };
 
+    // ⏱️ Таймер на основе СЕРВЕРНОГО времени (синхронизирован для всех)
     const getTarget = () => {
+        if (state.serverNextUpdate && state.serverNextUpdate > Date.now()) {
+            return state.serverNextUpdate;
+        }
         try {
             const raw = localStorage.getItem(CONFIG.TIMER_KEY);
             const parsed = raw ? parseInt(raw, 10) : null;
@@ -123,6 +126,7 @@
         const target = getTarget();
         const shouldRefresh = force || (target <= Date.now());
         let errorMsg = null, usedFallback = false;
+        let data = null;
 
         if (shouldRefresh) {
             try {
@@ -139,8 +143,17 @@
                 console.log("📥 Статус:", res.status);
                 if (!res.ok) throw new Error(`HTTP ${res.status}`);
                 
-                const data = await res.json();
-                console.log("📦 Получено:", data);
+                data = await res.json();
+                console.log("📦 Получено:", { success: data.success, count: data.count, source: data.source });
+                
+                // 🕐 Синхронизация таймера с сервером
+                if (data.next_update) {
+                    const serverTime = new Date(data.next_update).getTime();
+                    if (serverTime > Date.now()) {
+                        state.serverNextUpdate = serverTime;
+                        console.log('🕐 Server sync:', new Date(serverTime).toLocaleTimeString('ru-RU'));
+                    }
+                }
                 
                 if (data.success && data.proxies?.length >= 3) {
                     const valid = data.proxies.filter(p => 
@@ -178,7 +191,7 @@
             setTarget(Date.now() + CONFIG.REFRESH_MS);
         }
 
-        render(errorMsg, usedFallback);
+        render(errorMsg, usedFallback, data);
         startCountdown();
     };
 
@@ -218,18 +231,29 @@
         state.pingTimer = setInterval(loop, CONFIG.PING_INTERVAL);
     };
 
-    const render = (error, usedFallback) => {
+    const render = (error, usedFallback, data) => {
         const sorted = [...state.proxies].sort((a,b) => a.used - b.used).slice(0, CONFIG.MAX_PROXIES);
+        
+        // Форматируем время последнего обновления
+        let lastUpdateText = '--:--';
+        if (data?.timestamp) {
+            const date = new Date(data.timestamp);
+            lastUpdateText = date.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
+        }
+        
         let html = `
             <div class="header">
-                <div class="version">v2.2.8</div>
+                <div class="version">v3.0.0</div>
                 <div class="stats">
                     📡 ${sorted.length}
                     ${usedFallback ? '<span class="fallback-badge">резерв</span>' : ''}
                 </div>
             </div>
             <h1>MTProto для Telegram</h1>
-            <div class="sub">Источник: @ProxyFree_Ru • Автообновление 10 мин</div>
+            <div class="sub">
+                Источник: @ProxyFree_Ru • 
+                Обновлено: <strong>${lastUpdateText}</strong>
+            </div>
             ${error ? `<div class="error-msg">${error}</div>` : ""}
         `;
         
@@ -275,8 +299,12 @@
 
     document.addEventListener("DOMContentLoaded", () => {
         console.log("✅ Приложение запущено");
-        console.log("🔗 Worker URL:", CONFIG.WORKER_URL);
-        updateProxies(true);
+        console.log("🔗 URL:", CONFIG.WORKER_URL);
+        
+        // Сначала загружаем данные (чтобы получить серверное время)
+        updateProxies(true).then(() => {
+            startCountdown();
+        });
     });
 </script>
 </body>

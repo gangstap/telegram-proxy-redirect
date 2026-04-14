@@ -57,7 +57,7 @@
     const WORKER_URL = "https://artproxz.github.io/telegram-proxy-redirect";
     
     const CONFIG = {
-        WORKER_URL: WORKER_URL + "/?pages=5&days=7",
+        WORKER_URL: "https://artproxz.github.io/telegram-proxy-redirect/proxies.json",
         REFRESH_MS: 600000,
         PING_INTERVAL: 15000,
         MAX_PROXIES: 12,
@@ -222,7 +222,7 @@
         const sorted = [...state.proxies].sort((a,b) => a.used - b.used).slice(0, CONFIG.MAX_PROXIES);
         let html = `
             <div class="header">
-                <div class="version">v2.2.7</div>
+                <div class="version">v2.2.8</div>
                 <div class="stats">
                     📡 ${sorted.length}
                     ${usedFallback ? '<span class="fallback-badge">резерв</span>' : ''}

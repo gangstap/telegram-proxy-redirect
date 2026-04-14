@@ -2,7 +2,10 @@ name: Fetch Telegram Proxies
 
 on:
   schedule:
-    - cron: '*/10 * * * *'  # Каждые 10 минут
+    # ✅ КАЖДЫЕ 10 МИНУТ - ПРОВЕРЕНО!
+    # Формат: минута час день месяц день-недели
+    # */10 = каждые 10 минут
+    - cron: '*/10 * * * *'
   workflow_dispatch:  # Ручной запуск
 
 jobs:
@@ -11,17 +14,16 @@ jobs:
     permissions:
       contents: write
     
-    # ✅ Убирает предупреждение о Node.js 20
     env:
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
     
     steps:
-      - uses: actions/checkout@v5  # ✅ Обновлено до v5
+      - uses: actions/checkout@v5
       
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '22'  # ✅ Node.js 22
+          node-version: '22'
       
       - name: Fetch proxies
         run: |

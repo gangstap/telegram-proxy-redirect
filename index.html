@@ -72,15 +72,15 @@
         PROXIES_URL: "https://artproxz.github.io/telegram-proxy-redirect/proxies.json",
         PING_INTERVAL: 10000,
         MAX_PROXIES: 12,
-        USED_KEY: "tg_used_v303",
-        SEEN_HASHES: "tg_hashes_v303",
+        USED_KEY: "tg_used_v304",
+        SEEN_HASHES: "tg_hashes_v304",
         FALLBACK: [
             {type:"MTProto",server:"185.173.36.38",port:"443",secret:"eeRighJJvXrFGRMCIMJdCQ",flag:"🇳🇱"},
             {type:"MTProto",server:"91.107.255.159",port:"8443",secret:"eeNEgYdJvXrFGRMCIMJdCQ",flag:"🇩🇪"},
             {type:"MTProto",server:"65.109.153.70",port:"8443",secret:"1320PuNyHw_LQKT_Y7XNJw",flag:"🇫🇮"},
             {type:"MTProto",server:"51.15.246.20",port:"8443",secret:"eeNEgYdJvXrFGRMCIMJdCQ",flag:"🇫🇷"},
-            {type:"MTProto",server:"149.154.167.91",port:"8443",secret:"dd070b1b71f82167e279061e9b53f4f1",flag:"🇬🇧"},
-            {type:"MTProto",server:"149.154.167.103",port:"8443",secret:"dd070b1b71f82167e279061e9b53f4f1",flag:"🇬🇧"},
+            {type:"MTProto",server:"149.154.167.91",port:"8443",secret:"dd070b1b71f82167e279061e9b53f4f1",flag:"🇬"},
+            {type:"MTProto",server:"149.154.167.103",port:"8443",secret:"dd070b1b71f82167e279061e9b53f4f1",flag:"🇬"},
             {type:"MTProto",server:"149.154.167.92",port:"8443",secret:"dd070b1b71f82167e279061e9b53f4f1",flag:"🇬🇧"},
             {type:"MTProto",server:"149.154.167.100",port:"8443",secret:"dd070b1b71f82167e279061e9b53f4f1",flag:"🇬🇧"},
             {type:"MTProto",server:"149.154.171.100",port:"8443",secret:"dd070b1b71f82167e279061e9b53f4f1",flag:"🇬🇧"},
@@ -120,15 +120,26 @@
         });
     };
 
-    const getTimeAgo = (date) => {
-        if (!date) return '—';
-        const now = new Date(), diff = now - new Date(date);
-        const sec = Math.floor(diff/1000), min = Math.floor(sec/60), hr = Math.floor(min/60), day = Math.floor(hr/24);
-        if (sec < 60) return 'Только что';
-        if (min < 60) return `${min} мин. назад`;
-        if (hr < 24) return `${hr} ч. назад`;
-        if (day < 7) return `${day} дн. назад`;
-        return new Date(date).toLocaleDateString('ru-RU');
+    const formatDateTime = (dateStr) => {
+        if (!dateStr) return '—';
+        const date = new Date(dateStr);
+        const now = new Date();
+        const diff = now - date;
+        const minutes = Math.floor(diff / 60000);
+        const hours = Math.floor(diff / 3600000);
+        const days = Math.floor(diff / 86400000);
+        
+        if (minutes < 1) return 'Только что';
+        if (minutes < 60) return `${minutes} мин. назад`;
+        if (hours < 24) return `${hours} ч. назад`;
+        if (days < 7) return `${days} дн. назад`;
+        
+        return date.toLocaleString('ru-RU', { 
+            day: '2-digit', 
+            month: '2-digit', 
+            hour: '2-digit', 
+            minute: '2-digit' 
+        });
     };
 
     const loadProxies = async () => {
@@ -154,7 +165,6 @@
                     fromFallback: false, fetchedAt: p.fetchedAt || data.timestamp
                 }));
                 
-                // 🔔 Уведомления ТОЛЬКО о новых хешах
                 const seen = getSeenHashes();
                 const trulyNew = newProxies.filter(p => !seen.has(makeHash(p)));
                 if (trulyNew.length > 0) {
@@ -163,7 +173,6 @@
                     saveSeenHashes(seen);
                 }
                 
-                // 🔥 Сортировка: новые первыми
                 newProxies.sort((a, b) => new Date(b.fetchedAt) - new Date(a.fetchedAt));
                 state.proxies = newProxies;
                 state.usingFallback = false;
@@ -203,13 +212,11 @@
     };
 
     const render = () => {
-        // ✅ Сортировка: сначала неиспользованные, потом по новизне
         const sorted = [...state.proxies].sort((a, b) => {
             if (a.used !== b.used) return a.used - b.used;
             return new Date(b.fetchedAt) - new Date(a.fetchedAt);
         }).slice(0, CONFIG.MAX_PROXIES);
         
-        // 🔥 Определяем, какие прокси получают огонёк: первые 3 НЕИСПОЛЬЗОВАННЫХ и НЕ из фоллбэка
         const hotKeys = new Set();
         let hotCount = 0;
         for (const p of sorted) {
@@ -223,14 +230,14 @@
         if (state.lastUpdate) lastUpdateText = state.lastUpdate.toLocaleTimeString('ru-RU', { hour:'2-digit', minute:'2-digit', second:'2-digit' });
         
         let html = `
-            <div class="header"><div class="version">v3.3.0</div><div class="stats">📡 ${sorted.length}${state.usingFallback ? ' <span class="fallback-badge">резерв</span>' : ''}</div></div>
+            <div class="header"><div class="version">v4.0.0</div><div class="stats">📡 ${sorted.length}${state.usingFallback ? ' <span class="fallback-badge">резерв</span>' : ''}</div></div>
             <h1>MTProto для Telegram</h1>
             <div class="sub">Источник: @ProxyFree_Ru • GitHub Actions каждые 10 мин</div>
             <div class="last-update">Обновлено: <strong>${lastUpdateText}</strong></div>`;
         
         sorted.forEach(p => {
             const isHot = hotKeys.has(p.key);
-            const addedAgo = getTimeAgo(p.fetchedAt);
+            const addedTime = formatDateTime(p.fetchedAt);
             html += `
                 <div class="proxy-card ${p.used ? 'used' : 'active'} ${isHot ? 'hot' : ''}" data-key="${p.key}">
                     ${isHot ? '<span class="hot-badge">🔥</span>' : ''}
@@ -240,7 +247,7 @@
                         <div class="meta">
                             <span class="type-badge">${p.type}</span>
                             <span class="ping-badge ping-pending" id="ping-${p.key}">🔄</span>
-                            <span class="time-badge" title="${new Date(p.fetchedAt).toLocaleString('ru-RU')}">🕐 ${addedAgo}</span>
+                            <span class="time-badge" title="${new Date(p.fetchedAt).toLocaleString('ru-RU')}">🕐 ${addedTime}</span>
                         </div>
                     </div>
                     <button class="btn" onclick="connectProxy('${p.raw}')">Подключить</button>
@@ -257,7 +264,7 @@
                     Обновить список
                 </button>
             </div>
-            <div class="footer">Пинг каждые 10 сек • 🔥 Только первые 3 неиспользованных новых • Состояние "использовано" — только в вашем браузере</div>`;
+            <div class="footer">Пинг каждые 10 сек. Все прокси-сервера актуальны.</div>`;
         document.getElementById("app").innerHTML = html;
     };
 

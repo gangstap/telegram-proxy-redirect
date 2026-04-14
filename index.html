@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MTProto Proxy Hub</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Inter', sans-serif; background: #0b1120; color: #e2e8f0; min-height: 100vh; display: flex; justify-content: center; padding: 24px 12px; }
         .container { max-width: 680px; width: 100%; background: rgba(15,23,42,0.95); backdrop-filter: blur(12px); border-radius: 24px; padding: 20px; border: 1px solid #1e293b; }
@@ -15,86 +15,97 @@
         h1 { font-size: 1.4rem; font-weight: 600; text-align: center; margin: 8px 0 4px; }
         .sub { text-align: center; font-size: 0.8rem; color: #64748b; margin-bottom: 16px; }
         
-        .proxy-card { background: #111827; border-radius: 14px; padding: 10px 12px; margin-bottom: 8px; display: grid; grid-template-columns: auto 1fr auto; gap: 10px; align-items: center; border: 2px solid transparent; transition: 0.25s; position: relative; overflow: hidden; }
+        .proxy-card { background: #111827; border-radius: 14px; padding: 12px; margin-bottom: 8px; display: grid; grid-template-columns: auto 1fr auto; gap: 10px; align-items: center; border: 2px solid transparent; transition: 0.25s; position: relative; overflow: hidden; }
         .proxy-card.active { border-color: #facc15; box-shadow: 0 0 12px rgba(250,204,21,0.2); animation: glow 2.5s infinite alternate; }
+        .proxy-card.hot { border-color: #ef4444; box-shadow: 0 0 16px rgba(239,68,68,0.3); }
         @keyframes glow { 0% { box-shadow: 0 0 12px rgba(250,204,21,0.2); } 100% { box-shadow: 0 0 20px rgba(250,204,21,0.35); } }
         .proxy-card.active::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 2px; background: linear-gradient(90deg, transparent, #facc15, transparent); animation: shimmer 3s infinite linear; }
         @keyframes shimmer { to { transform: translateX(200%); } }
         .proxy-card.used { filter: grayscale(0.85); opacity: 0.7; border-color: #334155; animation: none !important; }
         .proxy-card.used::after { content: '✓'; position: absolute; top: 6px; right: 10px; color: #22c55e; font-weight: bold; }
         
-        .flag { font-size: 1.6rem; }
-        .info { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+        .flag { font-size: 1.8rem; }
+        .hot-badge { position: absolute; top: 4px; left: 4px; font-size: 1rem; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.2); } }
+        
+        .info { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
         .host { font-weight: 500; color: #f1f5f9; font-size: 0.9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .meta { display: flex; gap: 6px; align-items: center; font-size: 0.7rem; color: #94a3b8; flex-wrap: wrap; }
         .type-badge { background: #3b82f620; color: #60a5fa; padding: 2px 5px; border-radius: 4px; font-weight: 500; }
-        .ping-badge { padding: 2px 5px; border-radius: 4px; font-weight: 500; min-width: 40px; text-align: center; }
+        .ping-badge { padding: 2px 5px; border-radius: 4px; font-weight: 500; min-width: 45px; text-align: center; }
         .ping-good { background: #22c55e20; color: #4ade80; }
         .ping-mid { background: #eab30820; color: #facc15; }
+        .ping-bad { background: #ef444420; color: #f87171; }
         .ping-pending { background: #64748b20; color: #94a3b8; }
+        .time-badge { background: #6366f120; color: #a78bfa; padding: 2px 5px; border-radius: 4px; font-weight: 500; }
         
-        .btn { background: linear-gradient(135deg, #0ea5e9, #0284c7); color: #fff; border: none; padding: 7px 14px; border-radius: 8px; font-weight: 500; cursor: pointer; font-size: 0.85rem; transition: 0.15s; }
+        .btn { background: linear-gradient(135deg, #0ea5e9, #0284c7); color: #fff; border: none; padding: 8px 16px; border-radius: 8px; font-weight: 500; cursor: pointer; font-size: 0.85rem; transition: 0.15s; }
         .btn:hover { filter: brightness(1.1); transform: translateY(-1px); }
+        .btn:active { transform: translateY(0); }
         .proxy-card.used .btn { background: #475569; box-shadow: none; opacity: 0.8; }
+        
+        .refresh-section { text-align: center; margin-top: 16px; padding-top: 16px; border-top: 1px solid #1e293b; }
+        .refresh-btn { background: linear-gradient(135deg, #10b981, #059669); color: #fff; border: none; padding: 12px 32px; border-radius: 12px; font-weight: 600; cursor: pointer; font-size: 0.95rem; transition: 0.2s; display: inline-flex; align-items: center; gap: 8px; }
+        .refresh-btn:hover { filter: brightness(1.1); transform: translateY(-2px); }
+        .refresh-btn:active { transform: translateY(0); }
+        .refresh-btn:disabled { background: #475569; cursor: not-allowed; transform: none; }
+        .refresh-icon { width: 18px; height: 18px; }
+        .spinning { animation: spin 1s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
         
         .footer { text-align: center; margin-top: 14px; font-size: 0.75rem; color: #64748b; }
         .loader { text-align: center; padding: 30px; color: #94a3b8; }
         .spinner { width: 24px; height: 24px; border: 3px solid #1e293b; border-top-color: #0ea5e9; border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 10px; }
-        @keyframes spin { to { transform: rotate(360deg); } }
         .error-msg { background: #450a0a; border: 1px solid #7f1d1d; padding: 10px; border-radius: 10px; text-align: center; color: #fca5a5; font-size: 0.8rem; margin-bottom: 12px; }
         .fallback-badge { background: #78350f; color: #facc15; padding: 2px 6px; border-radius: 4px; font-size: 0.65rem; }
+        .last-update { text-align: center; font-size: 0.75rem; color: #64748b; margin-top: 8px; }
         
         .toast { position: fixed; top: 20px; right: 20px; z-index: 9999; background: linear-gradient(135deg, #10b981, #059669); color: #fff; padding: 12px 16px; border-radius: 12px; font-size: 0.85rem; font-weight: 500; box-shadow: 0 4px 12px rgba(16,185,129,0.4); transform: translateX(120%); opacity: 0; transition: 0.4s; display: flex; align-items: center; gap: 10px; }
         .toast.show { transform: translateX(0); opacity: 1; }
         .toast button { background: none; border: none; color: rgba(255,255,255,0.9); cursor: pointer; font-size: 1.1rem; padding: 0 4px; }
-        @media (max-width: 500px) { .proxy-card { grid-template-columns: 1fr; } .btn { width: 100%; } .toast { left: 10px; right: 10px; justify-content: space-between; } }
+        @media (max-width: 500px) { 
+            .proxy-card { grid-template-columns: 1fr; } 
+            .btn { width: 100%; } 
+            .toast { left: 10px; right: 10px; justify-content: space-between; } 
+        }
     </style>
 </head>
 <body>
-<div class="container" id="app"><div class="loader"><div class="spinner"></div>Загрузка...</div></div>
+<div class="container" id="app">
+    <div class="loader">
+        <div class="spinner"></div>
+        Загрузка...
+    </div>
+</div>
 
 <script>
-    // ✅ URL теперь указывает прямо на proxies.json
     const CONFIG = {
-        WORKER_URL: "https://artproxz.github.io/telegram-proxy-redirect/proxies.json",
-        REFRESH_MS: 600000,
-        PING_INTERVAL: 15000,
+        PROXIES_URL: "https://artproxz.github.io/telegram-proxy-redirect/proxies.json",
+        PING_INTERVAL: 10000,
         MAX_PROXIES: 12,
-        TIMER_KEY: "tg_tmr_v228",
-        USED_KEY: "tg_used_v228",
+        USED_KEY: "tg_used_v300",
         FALLBACK: [
-            {type:"MTProto",server:"185.173.36.38",port:"443",secret:"eeRighJJvXrFGRMCIMJdCQ",flag:"🇳🇱",raw:"tg://proxy?server=185.173.36.38&port=443&secret=eeRighJJvXrFGRMCIMJdCQ"},
-            {type:"MTProto",server:"91.107.255.159",port:"8443",secret:"eeNEgYdJvXrFGRMCIMJdCQ",flag:"🇩🇪",raw:"tg://proxy?server=91.107.255.159&port=8443&secret=eeNEgYdJvXrFGRMCIMJdCQ"},
-            {type:"MTProto",server:"65.109.153.70",port:"8443",secret:"1320PuNyHw_LQKT_Y7XNJw",flag:"🇫🇮",raw:"tg://proxy?server=65.109.153.70&port=8443&secret=1320PuNyHw_LQKT_Y7XNJw"},
-            {type:"MTProto",server:"51.15.246.20",port:"8443",secret:"eeNEgYdJvXrFGRMCIMJdCQ",flag:"🇫🇷",raw:"tg://proxy?server=51.15.246.20&port=8443&secret=eeNEgYdJvXrFGRMCIMJdCQ"},
-            {type:"MTProto",server:"149.154.167.91",port:"8443",secret:"dd070b1b71f82167e279061e9b53f4f1",flag:"🇬🇧",raw:"tg://proxy?server=149.154.167.91&port=8443&secret=dd070b1b71f82167e279061e9b53f4f1"},
-            {type:"MTProto",server:"149.154.167.103",port:"8443",secret:"dd070b1b71f82167e279061e9b53f4f1",flag:"🇬🇧",raw:"tg://proxy?server=149.154.167.103&port=8443&secret=dd070b1b71f82167e279061e9b53f4f1"},
-            {type:"MTProto",server:"149.154.167.92",port:"8443",secret:"dd070b1b71f82167e279061e9b53f4f1",flag:"🇬🇧",raw:"tg://proxy?server=149.154.167.92&port=8443&secret=dd070b1b71f82167e279061e9b53f4f1"},
-            {type:"MTProto",server:"149.154.167.100",port:"8443",secret:"dd070b1b71f82167e279061e9b53f4f1",flag:"🇬🇧",raw:"tg://proxy?server=149.154.167.100&port=8443&secret=dd070b1b71f82167e279061e9b53f4f1"},
-            {type:"MTProto",server:"149.154.171.100",port:"8443",secret:"dd070b1b71f82167e279061e9b53f4f1",flag:"🇬🇧",raw:"tg://proxy?server=149.154.171.100&port=8443&secret=dd070b1b71f82167e279061e9b53f4f1"},
-            {type:"MTProto",server:"149.154.175.100",port:"8443",secret:"dd070b1b71f82167e279061e9b53f4f1",flag:"🇬🇧",raw:"tg://proxy?server=149.154.175.100&port=8443&secret=dd070b1b71f82167e279061e9b53f4f1"},
-            {type:"MTProto",server:"149.154.175.102",port:"8443",secret:"dd070b1b71f82167e279061e9b53f4f1",flag:"🇬🇧",raw:"tg://proxy?server=149.154.175.102&port=8443&secret=dd070b1b71f82167e279061e9b53f4f1"},
-            {type:"MTProto",server:"149.154.167.200",port:"8443",secret:"dd070b1b71f82167e279061e9b53f4f1",flag:"🇬🇧",raw:"tg://proxy?server=149.154.167.200&port=8443&secret=dd070b1b71f82167e279061e9b53f4f1"}
+            {type:"MTProto",server:"185.173.36.38",port:"443",secret:"eeRighJJvXrFGRMCIMJdCQ",flag:"🇳"},
+            {type:"MTProto",server:"91.107.255.159",port:"8443",secret:"eeNEgYdJvXrFGRMCIMJdCQ",flag:"🇩🇪"},
+            {type:"MTProto",server:"65.109.153.70",port:"8443",secret:"1320PuNyHw_LQKT_Y7XNJw",flag:"🇫"},
+            {type:"MTProto",server:"51.15.246.20",port:"8443",secret:"eeNEgYdJvXrFGRMCIMJdCQ",flag:"🇫🇷"},
+            {type:"MTProto",server:"149.154.167.91",port:"8443",secret:"dd070b1b71f82167e279061e9b53f4f1",flag:"🇬🇧"},
+            {type:"MTProto",server:"149.154.167.103",port:"8443",secret:"dd070b1b71f82167e279061e9b53f4f1",flag:"🇬🇧"},
+            {type:"MTProto",server:"149.154.167.92",port:"8443",secret:"dd070b1b71f82167e279061e9b53f4f1",flag:"🇬🇧"},
+            {type:"MTProto",server:"149.154.167.100",port:"8443",secret:"dd070b1b71f82167e279061e9b53f4f1",flag:"🇬🇧"},
+            {type:"MTProto",server:"149.154.171.100",port:"8443",secret:"dd070b1b71f82167e279061e9b53f4f1",flag:"🇬🇧"},
+            {type:"MTProto",server:"149.154.175.100",port:"8443",secret:"dd070b1b71f82167e279061e9b53f4f1",flag:"🇬🇧"},
+            {type:"MTProto",server:"149.154.175.102",port:"8443",secret:"dd070b1b71f82167e279061e9b53f4f1",flag:"🇬🇧"},
+            {type:"MTProto",server:"149.154.167.200",port:"8443",secret:"dd070b1b71f82167e279061e9b53f4f1",flag:"🇬🇧"}
         ]
     };
 
-    let state = { proxies: [], timer: null, pingTimer: null, usingFallback: false, serverNextUpdate: null };
-
-    // ⏱️ Таймер на основе СЕРВЕРНОГО времени (синхронизирован для всех)
-    const getTarget = () => {
-        if (state.serverNextUpdate && state.serverNextUpdate > Date.now()) {
-            return state.serverNextUpdate;
-        }
-        try {
-            const raw = localStorage.getItem(CONFIG.TIMER_KEY);
-            const parsed = raw ? parseInt(raw, 10) : null;
-            if (parsed && parsed > Date.now()) return parsed;
-        } catch(e) {}
-        return Date.now() + CONFIG.REFRESH_MS;
-    };
-    
-    const setTarget = (t) => {
-        try { localStorage.setItem(CONFIG.TIMER_KEY, String(t)); } catch(e) {}
+    let state = { 
+        proxies: [], 
+        pingTimer: null, 
+        usingFallback: false,
+        lastUpdate: null,
+        isLoading: false
     };
 
     const getUsed = () => { 
@@ -111,175 +122,237 @@
     
     const isUsed = (k) => getUsed().has(k);
 
-    const notify = (msg) => {
+    const notify = (msg, duration = 8000) => {
         const t = document.createElement("div");
         t.className = "toast";
         t.innerHTML = `<span>✨ ${msg}</span><button onclick="this.parentElement.remove()">✕</button>`;
         document.body.appendChild(t);
         requestAnimationFrame(() => t.classList.add("show"));
-        setTimeout(() => { if(t.parentNode) t.remove(); }, 8000);
+        setTimeout(() => { if(t.parentNode) t.remove(); }, duration);
     };
 
-    const updateProxies = async (force = false) => {
-        console.log("🔄 Обновление прокси, force:", force);
-        
-        const target = getTarget();
-        const shouldRefresh = force || (target <= Date.now());
-        let errorMsg = null, usedFallback = false;
-        let data = null;
+    // 📶 Реальный пинг через Image запрос
+    const checkPing = async (server, port) => {
+        return new Promise(resolve => {
+            const start = performance.now();
+            const img = new Image();
+            const timeout = setTimeout(() => { cleanup(); resolve(null); }, 2000);
+            const cleanup = () => { clearTimeout(timeout); img.onload = img.onerror = null; img.src = ""; };
+            img.onload = img.onerror = () => { 
+                cleanup(); 
+                const ms = Math.round(performance.now() - start);
+                resolve(ms); 
+            };
+            // Пытаемся достучаться через HTTPS
+            img.src = `https://${server}:${port}/favicon.ico?_=${Date.now()}`;
+        });
+    };
 
-        if (shouldRefresh) {
-            try {
-                console.log("📡 Запрос:", CONFIG.WORKER_URL);
-                const controller = new AbortController();
-                const timeout = setTimeout(() => controller.abort(), 8000);
-                
-                const res = await fetch(CONFIG.WORKER_URL, { 
-                    cache: "no-store", 
-                    signal: controller.signal 
-                });
-                clearTimeout(timeout);
-                
-                console.log("📥 Статус:", res.status);
-                if (!res.ok) throw new Error(`HTTP ${res.status}`);
-                
-                data = await res.json();
-                console.log("📦 Получено:", { success: data.success, count: data.count, source: data.source });
-                
-                // 🕐 Синхронизация таймера с сервером
-                if (data.next_update) {
-                    const serverTime = new Date(data.next_update).getTime();
-                    if (serverTime > Date.now()) {
-                        state.serverNextUpdate = serverTime;
-                        console.log('🕐 Server sync:', new Date(serverTime).toLocaleTimeString('ru-RU'));
-                    }
-                }
-                
-                if (data.success && data.proxies?.length >= 3) {
-                    const valid = data.proxies.filter(p => 
-                        p.server && p.server !== "Unknown" && p.port && p.secret?.length > 10
-                    );
-                    const newProxies = valid.slice(0, CONFIG.MAX_PROXIES);
-                    
-                    const added = newProxies.filter(p => !isUsed(`${p.server}:${p.port}`));
-                    if (added.length > 0) notify(`+${added.length} новых`);
-                    
-                    state.proxies = newProxies.map(p => ({ 
-                        ...p, 
-                        key: `${p.server}:${p.port}`, 
-                        used: isUsed(`${p.server}:${p.port}`), 
-                        fromFallback: false 
-                    }));
-                    state.usingFallback = false;
-                } else {
-                    throw new Error(`Мало прокси: ${data.proxies?.length || 0}`);
-                }
-            } catch (e) {
-                console.warn("❌ Ошибка:", e.message);
-                errorMsg = "Не удалось загрузить. Показываем резерв.";
-                
-                state.proxies = CONFIG.FALLBACK.slice(0, CONFIG.MAX_PROXIES).map(p => ({ 
-                    ...p, 
-                    key: `${p.server}:${p.port}`, 
-                    used: isUsed(`${p.server}:${p.port}`), 
-                    fromFallback: true 
-                }));
-                state.usingFallback = true;
-                usedFallback = true;
-            }
-            
-            setTarget(Date.now() + CONFIG.REFRESH_MS);
+    // 🔄 Загрузка прокси
+    const loadProxies = async () => {
+        if (state.isLoading) return;
+        state.isLoading = true;
+        
+        const refreshBtn = document.getElementById("refresh-btn");
+        const refreshIcon = document.getElementById("refresh-icon");
+        if (refreshBtn) {
+            refreshBtn.disabled = true;
+            if (refreshIcon) refreshIcon.classList.add("spinning");
         }
 
-        render(errorMsg, usedFallback, data);
-        startCountdown();
-    };
-
-    const startCountdown = () => {
-        clearInterval(state.timer);
-        const target = getTarget();
-        const el = document.getElementById("countdown");
-        if (!el) return;
-        
-        const tick = () => {
-            const diff = target - Date.now();
-            if (diff <= 0) {
-                clearInterval(state.timer);
-                updateProxies(true);
-                return;
+        try {
+            console.log("📡 Запрос прокси:", CONFIG.PROXIES_URL);
+            const controller = new AbortController();
+            const timeout = setTimeout(() => controller.abort(), 10000);
+            
+            const res = await fetch(CONFIG.PROXIES_URL, { 
+                cache: "no-store", 
+                signal: controller.signal 
+            });
+            clearTimeout(timeout);
+            
+            console.log("📥 Статус:", res.status);
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            
+            const data = await res.json();
+            console.log("📦 Получено:", { success: data.success, count: data.count, source: data.source });
+            
+            state.lastUpdate = data.timestamp ? new Date(data.timestamp) : new Date();
+            
+            if (data.success && data.proxies?.length >= 3) {
+                const valid = data.proxies.filter(p => 
+                    p.server && p.server !== "Unknown" && p.port && p.secret?.length > 10
+                );
+                
+                // Добавляем время получения для каждого прокси
+                const newProxies = valid.slice(0, CONFIG.MAX_PROXIES).map(p => ({
+                    ...p,
+                    key: `${p.server}:${p.port}`,
+                    used: isUsed(`${p.server}:${p.port}`),
+                    fromFallback: false,
+                    fetchedAt: data.timestamp || new Date().toISOString()
+                }));
+                
+                // 🔥 Сортировка: сначала новые (с огоньком), потом остальные
+                newProxies.sort((a, b) => {
+                    const timeA = new Date(a.fetchedAt).getTime();
+                    const timeB = new Date(b.fetchedAt).getTime();
+                    return timeB - timeA; // Новые первыми
+                });
+                
+                const added = newProxies.filter(p => !state.proxies.some(sp => sp.key === p.key));
+                if (added.length > 0) notify(`+${added.length} новых прокси`);
+                
+                state.proxies = newProxies;
+                state.usingFallback = false;
+            } else {
+                throw new Error(`Мало прокси: ${data.proxies?.length || 0}`);
             }
-            const m = Math.floor(diff/60000);
-            const s = Math.floor((diff%60000)/1000);
-            el.textContent = `${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
-        };
-        tick();
-        state.timer = setInterval(tick, 1000);
+        } catch (e) {
+            console.warn("❌ Ошибка:", e.message);
+            state.proxies = CONFIG.FALLBACK.slice(0, CONFIG.MAX_PROXIES).map(p => ({ 
+                ...p, 
+                key: `${p.server}:${p.port}`, 
+                used: isUsed(`${p.server}:${p.port}`), 
+                fromFallback: true,
+                fetchedAt: new Date().toISOString()
+            }));
+            state.usingFallback = true;
+        }
+        
+        state.isLoading = false;
+        if (refreshBtn) {
+            refreshBtn.disabled = false;
+            if (refreshIcon) refreshIcon.classList.remove("spinning");
+        }
+        
+        render();
+        startPingLoop();
     };
 
-    const runPingLoop = () => {
+    // 📶 Пинг-луп
+    const startPingLoop = () => {
         clearInterval(state.pingTimer);
+        
         const loop = async () => {
             for (const p of state.proxies) {
                 const el = document.getElementById(`ping-${p.key}`);
                 if (!el) continue;
-                el.className = "ping-badge ping-good";
-                el.textContent = "🟢";
-                await new Promise(r => setTimeout(r, 200));
+                
+                const ms = await checkPing(p.server, p.port);
+                
+                if (el) {
+                    if (ms === null) {
+                        el.className = "ping-badge ping-pending";
+                        el.textContent = "—";
+                    } else if (ms < 200) {
+                        el.className = "ping-badge ping-good";
+                        el.textContent = `${ms}ms`;
+                    } else if (ms < 500) {
+                        el.className = "ping-badge ping-mid";
+                        el.textContent = `${ms}ms`;
+                    } else {
+                        el.className = "ping-badge ping-bad";
+                        el.textContent = `${ms}ms`;
+                    }
+                }
+                
+                await new Promise(r => setTimeout(r, 150));
             }
         };
+        
         loop();
         state.pingTimer = setInterval(loop, CONFIG.PING_INTERVAL);
     };
 
-    const render = (error, usedFallback, data) => {
-        const sorted = [...state.proxies].sort((a,b) => a.used - b.used).slice(0, CONFIG.MAX_PROXIES);
+    // 🎨 Рендер
+    const render = () => {
+        const sorted = [...state.proxies].sort((a, b) => {
+            // Сначала неиспользованные
+            if (a.used !== b.used) return a.used - b.used;
+            // Потом новые
+            return new Date(b.fetchedAt) - new Date(a.fetchedAt);
+        }).slice(0, CONFIG.MAX_PROXIES);
         
         // Форматируем время последнего обновления
         let lastUpdateText = '--:--';
-        if (data?.timestamp) {
-            const date = new Date(data.timestamp);
-            lastUpdateText = date.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
+        if (state.lastUpdate) {
+            lastUpdateText = state.lastUpdate.toLocaleTimeString('ru-RU', { 
+                hour: '2-digit', 
+                minute: '2-digit',
+                second: '2-digit'
+            });
         }
         
         let html = `
             <div class="header">
-                <div class="version">v3.0.0</div>
+                <div class="version">v3.1.0</div>
                 <div class="stats">
                     📡 ${sorted.length}
-                    ${usedFallback ? '<span class="fallback-badge">резерв</span>' : ''}
+                    ${state.usingFallback ? '<span class="fallback-badge">резерв</span>' : ''}
                 </div>
             </div>
             <h1>MTProto для Telegram</h1>
-            <div class="sub">
-                Источник: @ProxyFree_Ru • 
-                Обновлено: <strong>${lastUpdateText}</strong>
-            </div>
-            ${error ? `<div class="error-msg">${error}</div>` : ""}
+            <div class="sub">Источник: @ProxyFree_Ru • GitHub Actions каждые 10 мин</div>
+            <div class="last-update">Последнее обновление: <strong>${lastUpdateText}</strong></div>
         `;
         
-        sorted.forEach(p => {
+        // 🔥 Первые 3 прокси — самые новые
+        sorted.forEach((p, index) => {
+            const isHot = index < 3 && !p.fromFallback;
+            const timeAgo = getTimeAgo(new Date(p.fetchedAt));
+            
             html += `
-                <div class="proxy-card ${p.used ? 'used' : 'active'}" data-key="${p.key}">
+                <div class="proxy-card ${p.used ? 'used' : 'active'} ${isHot ? 'hot' : ''}" data-key="${p.key}">
+                    ${isHot ? '<span class="hot-badge">🔥</span>' : ''}
                     <div class="flag">${p.flag || '🌐'}</div>
                     <div class="info">
                         <div class="host" title="${p.key}">${p.server}${p.fromFallback ? ' 🔒' : ''}</div>
                         <div class="meta">
                             <span class="type-badge">${p.type}</span>
                             <span class="ping-badge ping-pending" id="ping-${p.key}">🔄</span>
+                            <span class="time-badge" title="${new Date(p.fetchedAt).toLocaleString('ru-RU')}">${timeAgo}</span>
                         </div>
                     </div>
                     <button class="btn" onclick="connectProxy('${p.raw}')">Подключить</button>
                 </div>`;
         });
         
-        if (sorted.length === 0 && !error) {
-            html += `<div class="loader"><div class="spinner"></div>Ожидание...</div>`;
+        if (sorted.length === 0) {
+            html += `<div class="loader"><div class="spinner"></div>Нет прокси</div>`;
         }
-        html += `<div class="footer">Обновление через: <span id="countdown">--:--</span></div>`;
+        
+        html += `
+            <div class="refresh-section">
+                <button class="refresh-btn" id="refresh-btn" onclick="loadProxies()">
+                    <svg class="refresh-icon" id="refresh-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M23 4v6h-6M1 20v-6h6"/>
+                        <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
+                    </svg>
+                    Обновить список
+                </button>
+            </div>
+            <div class="footer">Пинг обновляется каждые 10 секунд</div>
+        `;
+        
         document.getElementById("app").innerHTML = html;
-        if (sorted.length) runPingLoop();
     };
 
+    // 🕐 Форматирование времени
+    const getTimeAgo = (date) => {
+        const now = new Date();
+        const diff = now - date;
+        const minutes = Math.floor(diff / 60000);
+        const hours = Math.floor(diff / 3600000);
+        const days = Math.floor(diff / 86400000);
+        
+        if (minutes < 1) return 'Только что';
+        if (minutes < 60) return `${minutes} мин назад`;
+        if (hours < 24) return `${hours} ч назад`;
+        return `${days} дн назад`;
+    };
+
+    // ✅ Подключение
     window.connectProxy = (raw) => {
         const m = raw.match(/server=([^&]+)&port=(\d+)/);
         if (m) {
@@ -297,14 +370,11 @@
         location.href = raw;
     };
 
+    // 🚀 Старт
     document.addEventListener("DOMContentLoaded", () => {
         console.log("✅ Приложение запущено");
-        console.log("🔗 URL:", CONFIG.WORKER_URL);
-        
-        // Сначала загружаем данные (чтобы получить серверное время)
-        updateProxies(true).then(() => {
-            startCountdown();
-        });
+        console.log("🔗 URL:", CONFIG.PROXIES_URL);
+        loadProxies();
     });
 </script>
 </body>

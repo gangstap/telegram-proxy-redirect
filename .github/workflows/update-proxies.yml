@@ -9,15 +9,19 @@ jobs:
   fetch:
     runs-on: ubuntu-latest
     permissions:
-      contents: write  # Важно: даём право на запись
+      contents: write
+    
+    # ✅ Убирает предупреждение о Node.js 20
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
     
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5  # ✅ Обновлено до v5
       
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'  # ✅ Node.js 22
       
       - name: Fetch proxies
         run: |
@@ -29,7 +33,6 @@ jobs:
           git config --local user.name "github-actions[bot]"
           git add proxies.json
           
-          # Проверяем есть ли изменения
           if ! git diff --staged --quiet; then
             echo "Changes detected, committing..."
             git commit -m "Update proxies $(date +%Y-%m-%d_%H:%M)"

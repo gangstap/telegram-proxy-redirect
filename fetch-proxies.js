@@ -14,8 +14,8 @@ const FALLBACK = [
   {type:"MTProto",server:"91.107.255.159",port:"8443",secret:"eeNEgYdJvXrFGRMCIMJdCQ",flag:"🇩🇪"},
   {type:"MTProto",server:"65.109.153.70",port:"8443",secret:"1320PuNyHw_LQKT_Y7XNJw",flag:"🇫🇮"},
   {type:"MTProto",server:"51.15.246.20",port:"8443",secret:"eeNEgYdJvXrFGRMCIMJdCQ",flag:"🇫🇷"},
-  {type:"MTProto",server:"149.154.167.91",port:"8443",secret:"dd070b1b71f82167e279061e9b53f4f1",flag:"🇬🇧"},
-  {type:"MTProto",server:"149.154.167.103",port:"8443",secret:"dd070b1b71f82167e279061e9b53f4f1",flag:"🇬🇧"},
+  {type:"MTProto",server:"149.154.167.91",port:"8443",secret:"dd070b1b71f82167e279061e9b53f4f1",flag:"🇬"},
+  {type:"MTProto",server:"149.154.167.103",port:"8443",secret:"dd070b1b71f82167e279061e9b53f4f1",flag:"🇬"},
   {type:"MTProto",server:"149.154.167.92",port:"8443",secret:"dd070b1b71f82167e279061e9b53f4f1",flag:"🇬🇧"},
   {type:"MTProto",server:"149.154.167.100",port:"8443",secret:"dd070b1b71f82167e279061e9b53f4f1",flag:"🇬🇧"},
   {type:"MTProto",server:"149.154.171.100",port:"8443",secret:"dd070b1b71f82167e279061e9b53f4f1",flag:"🇬🇧"},
@@ -23,6 +23,12 @@ const FALLBACK = [
   {type:"MTProto",server:"149.154.175.102",port:"8443",secret:"dd070b1b71f82167e279061e9b53f4f1",flag:"🇬🇧"},
   {type:"MTProto",server:"149.154.167.200",port:"8443",secret:"dd070b1b71f82167e279061e9b53f4f1",flag:"🇬🇧"}
 ];
+
+const FLAG_MAP = {
+  '185.': '🇳🇱', '91.107.': '🇩🇪', '65.109.': '🇫🇮', '51.15.': '🇫',
+  '149.154.': '🇬🇧', '.ru': '🇷🇺', '.de': '🇩🇪', '.nl': '🇳',
+  '.fr': '🇫🇷', '.fi': '🇫🇮', '.uk': '🇬🇧', '.us': '🇺🇸', '.sg': '🇸🇬'
+};
 
 function fetchUrl(url) {
   return new Promise((resolve, reject) => {
@@ -41,10 +47,9 @@ function fetchUrl(url) {
   });
 }
 
-function parseProxies(html) {
+function parseProxies(html, fetchTime) {
   const proxies = [];
   
-  // 🔥 Декодируем HTML-entities
   const decoded = html
     .replace(/&amp;/g, '&')
     .replace(/&lt;/g, '<')
@@ -52,7 +57,6 @@ function parseProxies(html) {
     .replace(/&quot;/g, '"')
     .replace(/&#39;/g, "'");
   
-  // 🔥 Стратегия 1: Ищем tg:// ссылки
   const tgPattern = /tg:\/\/proxy[?\s]*[^"'\s>]*server[=\s]+([^&\s"']+(?:\.[^&\s"']+)*)[^"'\s>]*port[=\s]+(\d{3,5})[^"'\s>]*secret[=\s]+([A-Za-z0-9_+\-=/]{16,})/gi;
   
   let match;
@@ -69,6 +73,7 @@ function parseProxies(html) {
           port,
           secret,
           flag: getFlag(server),
+          fetchedAt: fetchTime,
           raw: `tg://proxy?server=${server}&port=${port}&secret=${secret}`
         });
         console.log('✅ Parsed:', server, port);
@@ -78,7 +83,6 @@ function parseProxies(html) {
     }
   }
   
-  // 🔥 Стратегия 2: Прямой поиск по атрибутам href
   const hrefPattern = /href=["']([^"']*tg:\/\/proxy[^"']*)["']/gi;
   let hrefMatch;
   while ((hrefMatch = hrefPattern.exec(decoded)) !== null) {
@@ -96,6 +100,7 @@ function parseProxies(html) {
           port,
           secret,
           flag: getFlag(server),
+          fetchedAt: fetchTime,
           raw: link
         });
       }
@@ -107,29 +112,29 @@ function parseProxies(html) {
 }
 
 function getFlag(ip) {
-  if (ip.includes('185.')) return '🇳🇱';
-  if (ip.includes('91.107.')) return '🇩🇪';
-  if (ip.includes('65.109.')) return '🇫🇮';
-  if (ip.includes('51.15.')) return '🇫🇷';
-  if (ip.includes('149.154.')) return '🇬🇧';
+  for (const [prefix, flag] of Object.entries(FLAG_MAP)) {
+    if (ip.includes(prefix)) return flag;
+  }
   return '🌐';
 }
 
 async function main() {
   let proxies = [];
   const seen = new Set();
+  const fetchTime = new Date().toISOString();
   
   console.log('🔍 Fetching proxies from Telegram...');
+  console.log('🕐 Fetch time:', fetchTime);
   
   for (const channel of CHANNELS) {
-    if (proxies.length >= 12) break;
+    if (proxies.length >= 15) break;
     
     try {
       console.log('📡 Trying:', channel);
       const html = await fetchUrl(channel);
       console.log('📄 HTML length:', html.length);
       
-      const found = parseProxies(html);
+      const found = parseProxies(html, fetchTime);
       console.log('✅ Found:', found.length, 'proxies');
       
       for (const p of found) {
@@ -151,15 +156,15 @@ async function main() {
     console.log('⚠️ Using fallback proxies');
     proxies = FALLBACK.map(p => ({
       ...p,
+      fetchedAt: fetchTime,
       raw: `tg://proxy?server=${p.server}&port=${p.port}&secret=${p.secret}`
     }));
   }
   
-  // ✅ Добавляем next_update для синхронизации таймера
   const result = {
     success: true,
     count: proxies.length,
-    timestamp: new Date().toISOString(),
+    timestamp: fetchTime,
     next_update: new Date(Date.now() + 10 * 60 * 1000).toISOString(),
     proxies: proxies.slice(0, 12),
     source: proxies.length >= 3 && !proxies.every(p => FALLBACK.some(fb => fb.server === p.server)) ? 'telegram' : 'fallback'

@@ -1,7 +1,6 @@
 const https = require('https');
 const fs = require('fs');
 
-// ✅ ТОЛЬКО ОДИН КАНАЛ
 const CHANNEL_URL = 'https://t.me/s/ProxyFree_Ru';
 
 const FALLBACK = [
@@ -21,9 +20,10 @@ const FALLBACK = [
 
 const FLAG_MAP = {
   '185.': '🇳🇱', '91.107.': '🇩🇪', '65.109.': '🇫🇮', '51.15.': '🇫',
-  '149.154.': '🇬🇧', '.ru': '🇷🇺', '.de': '🇩🇪', '.nl': '🇳',
-  '.fr': '🇫🇷', '.fi': '🇫🇮', '.uk': '🇬🇧', '.us': '🇺🇸', '.sg': '🇸',
-  '.ir': '🇮🇷', '.ae': '🇦🇪', '.tr': '🇹', '.pl': '🇱', '.by': '🇧🇾'
+  '149.154.': '🇬🇧', '.ru': '🇷🇺', '.de': '🇩🇪', '.nl': '🇳🇱',
+  '.fr': '🇫🇷', '.fi': '🇫🇮', '.uk': '🇬🇧', '.us': '🇺', '.sg': '🇬',
+  '.ir': '🇮🇷', '.ae': '🇦🇪', '.tr': '🇹🇷', '.pl': '🇵🇱', '.by': '🇧🇾',
+  '.info': '🌐', '.xyz': '🌐', '.best': '🌐', '.click': '🌐', '.lat': '🌐'
 };
 
 function fetchUrl(url) {
@@ -43,64 +43,38 @@ function fetchUrl(url) {
   });
 }
 
-// 🔍 Парсим прокси С ВРЕМЕНЕМ публикации каждого сообщения
 function parseProxiesFromChannel(html) {
   const proxies = [];
-  const decoded = html
-    .replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>')
-    .replace(/&quot;/g, '"').replace(/&#39;/g, "'");
+  const now = new Date();
   
-  // 🔥 Разбиваем HTML на блоки сообщений
-  const messageBlocks = decoded.split(/<div[^>]*class="[^"]*tgme_widget_message[^"]*"[^>]*>/i).slice(1);
-  
+  // 🔥 Разбиваем на сообщения
+  const messageBlocks = html.split(/<div[^>]*class="[^"]*tgme_widget_message[^"]*"[^>]*>/i).slice(1);
   console.log(`📦 Found ${messageBlocks.length} message blocks`);
   
-  for (const block of messageBlocks) {
-    // 🕐 Извлекаем время публикации сообщения
-    const timeMatch = block.match(/<time[^>]*datetime="([^"]+)"/);
-    const messageTime = timeMatch ? new Date(timeMatch[1]).toISOString() : new Date().toISOString();
+  for (let i = 0; i < messageBlocks.length; i++) {
+    const block = messageBlocks[i];
     
-    // 🔍 Ищем tg:// ссылки в этом сообщении
-    const tgLinks = block.match(/tg:\/\/proxy\?server=[^&\s"&]+&port=\d+&secret=[^\s"&]+/gi) || [];
+    // 🕐 Извлекаем время из <time datetime="...">
+    const timeMatch = block.match(/<time[^>]*datetime="([^"]+)"/i);
+    let messageTime = now.toISOString();
+    
+    if (timeMatch && timeMatch[1]) {
+      messageTime = new Date(timeMatch[1]).toISOString();
+      console.log(`⏰ Message ${i} time:`, timeMatch[1]);
+    }
+    
+    // 🔍 Ищем tg:// ссылки
+    const tgLinks = block.match(/tg:\/\/proxy\?server=[^\s"&]+&port=\d+&secret=[^\s"&]+/gi) || [];
     
     for (const link of tgLinks) {
       try {
-        const cleanLink = link.replace(/"/g, '').replace(/&amp;/g, '&');
+        const cleanLink = link.replace(/"/g, '').replace(/&amp;/g, '&').trim();
         const params = new URLSearchParams(cleanLink.replace('tg://proxy?', ''));
         const server = params.get('server')?.trim();
         const port = params.get('port')?.trim();
         const secret = params.get('secret')?.trim();
         
-        if (server && port && secret?.length >= 16 && server.toLowerCase() !== 'unknown') {
-          proxies.push({
-            type: 'MTProto',
-            server,
-            port,
-            secret,
-            flag: getFlag(server),
-            fetchedAt: messageTime, // ⏰ Время публикации в Telegram!
-            raw: cleanLink
-          });
-          console.log(`✅ [${messageTime}] ${server}:${port}`);
-        }
-      } catch(e) {
-        console.warn('Parse error:', e.message);
-      }
-    }
-    
-    // 🔍 Альтернативный поиск по тексту
-    if (tgLinks.length === 0) {
-      const text = block.replace(/<[^>]+>/g, ' ');
-      const serverMatch = text.match(/(?:server|хост)[:\s]*([a-zA-Z0-9.\-_]+)/i);
-      const portMatch = text.match(/(?:port|порт)[:\s]*(\d{3,5})/i);
-      const secretMatch = text.match(/(?:secret|ключ)[:\s]*([A-Za-z0-9_+\-=/]{16,})/i);
-      
-      if (serverMatch && portMatch && secretMatch) {
-        const server = serverMatch[1].trim();
-        const port = portMatch[1].trim();
-        const secret = secretMatch[1].trim();
-        
-        if (server && port && secret.length >= 16 && server.toLowerCase() !== 'unknown') {
+        if (server && port && secret && secret.length >= 16 && server.toLowerCase() !== 'unknown') {
           proxies.push({
             type: 'MTProto',
             server,
@@ -108,9 +82,12 @@ function parseProxiesFromChannel(html) {
             secret,
             flag: getFlag(server),
             fetchedAt: messageTime,
-            raw: `tg://proxy?server=${server}&port=${port}&secret=${secret}`
+            raw: cleanLink
           });
+          console.log(`✅ [${messageTime}] ${server}:${port}`);
         }
+      } catch(e) {
+        console.warn('Parse error:', e.message);
       }
     }
   }
@@ -136,10 +113,10 @@ async function main() {
     const proxies = parseProxiesFromChannel(html);
     console.log('📊 Total parsed:', proxies.length);
     
-    // 🔥 Сортировка: самые свежие (по времени публикации) первыми
+    // 🔥 Сортировка: самые свежие первыми
     proxies.sort((a, b) => new Date(b.fetchedAt) - new Date(a.fetchedAt));
     
-    // Убираем дубликаты (по server:port)
+    // Убираем дубликаты
     const seen = new Set();
     const uniqueProxies = [];
     for (const p of proxies) {
@@ -179,10 +156,9 @@ async function main() {
     };
     
     fs.writeFileSync('proxies.json', JSON.stringify(result, null, 2));
-    console.log(`💾 Saved ${finalProxies.length} proxies to proxies.json`);
+    console.log(`💾 Saved ${finalProxies.length} proxies`);
   } catch (e) {
     console.error('❌ Critical error:', e.message);
-    // Фоллбэк при ошибке
     const result = {
       success: false,
       count: FALLBACK.length,

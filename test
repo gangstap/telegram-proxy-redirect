@@ -1,0 +1,5 @@
+podrova://1234@144.31.0.36:443?sni=superbird.ru&udp_over_tcp=1&version=2&insecure=0
+vless://f53d9fc3-b95f-41ea-af0b-1462625476bf@144.31.0.36:8443?security=reality&type=tcp&headerType=&flow=xtls-rprx-vision&path=&host=&sni=_custom_&fp=chrome&pbk=8wD0IhR27ftD5LyJDq9CaFzi6DgA4vFtB-UP6QIdWVc&sid=e8ca5079a5e91481#poland-3
+podrova://1234@144.31.0.36:443?sni=superbird.ru&udp_over_tcp=1&version=2&insecure=0
+vless://f53d9fc3-b95f-41ea-af0b-1462625476bf@144.31.0.34:443?security=reality&type=tcp&headerType=&flow=xtls-rprx-vision&path=&host=&sni=_custom_&fp=chrome&pbk=8wD0IhR27ftD5LyJDq9CaFzi6DgA4vFtB-UP6QIdWVc&sid=e8ca5079a5e91481#poland1
+podrova://1234567@144.31.0.39:443?sni=superbird.ru&udp_over_tcp=1&version=2&insecure=0

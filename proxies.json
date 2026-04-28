@@ -1,8 +1,8 @@
 {
   "success": true,
   "count": 4,
-  "timestamp": "2026-04-28T21:34:12.511Z",
-  "next_update": "2026-04-28T21:44:12.511Z",
+  "timestamp": "2026-04-28T22:43:23.453Z",
+  "next_update": "2026-04-28T22:53:23.453Z",
   "proxies": [
     {
       "type": "MTProto",
@@ -10,7 +10,7 @@
       "port": "4515",
       "secret": "eee9a4f23b1d768c04a8d7f39120ca5b6e626973636f7474692e79656b74616e65742e636f6d",
       "flag": "🌐",
-      "fetchedAt": "2026-04-28T21:34:13.393Z",
+      "fetchedAt": "2026-04-28T22:43:24.376Z",
       "raw": "tg://proxy?server=alo.acharbashi.info&port=4515&secret=eee9a4f23b1d768c04a8d7f39120ca5b6e626973636f7474692e79656b74616e65742e636f6d"
     },
     {
@@ -19,7 +19,7 @@
       "port": "4515",
       "secret": "eee9a4f23b1d768c04a8d7f39120ca5b6e626973636f7474692e79656b74616e65742e636f6d",
       "flag": "🌐",
-      "fetchedAt": "2026-04-28T21:34:13.392Z",
+      "fetchedAt": "2026-04-28T22:43:24.376Z",
       "raw": "tg://proxy?server=dedicated.love-internet.xyz&port=4515&secret=eee9a4f23b1d768c04a8d7f39120ca5b6e626973636f7474692e79656b74616e65742e636f6d"
     },
     {
@@ -28,7 +28,7 @@
       "port": "4515",
       "secret": "eee9a4f23b1d768c04a8d7f39120ca5b6e626973636f7474692e79656b74616e65742e636f6d",
       "flag": "🌐",
-      "fetchedAt": "2026-04-28T21:34:13.392Z",
+      "fetchedAt": "2026-04-28T22:43:24.376Z",
       "raw": "tg://proxy?server=peyk.acharbashi.info&port=4515&secret=eee9a4f23b1d768c04a8d7f39120ca5b6e626973636f7474692e79656b74616e65742e636f6d"
     },
     {
@@ -37,7 +37,7 @@
       "port": "4515",
       "secret": "eee9a4f23b1d768c04a8d7f39120ca5b6e626973636f7474692e79656b74616e65742e636f6d",
       "flag": "🌐",
-      "fetchedAt": "2026-04-28T21:34:13.389Z",
+      "fetchedAt": "2026-04-28T22:43:24.373Z",
       "raw": "tg://proxy?server=test.alotaxi.info&port=4515&secret=eee9a4f23b1d768c04a8d7f39120ca5b6e626973636f7474692e79656b74616e65742e636f6d"
     }
   ],

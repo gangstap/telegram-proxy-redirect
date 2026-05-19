@@ -1,17 +1,17 @@
 {
   "success": true,
   "count": 4,
-  "timestamp": "2026-05-18T23:52:43.521Z",
-  "next_update": "2026-05-19T00:02:43.521Z",
+  "timestamp": "2026-05-19T01:54:11.699Z",
+  "next_update": "2026-05-19T02:04:11.699Z",
   "proxies": [
     {
       "type": "MTProto",
-      "server": "dedicated.love-internet.xyz",
+      "server": "alo.acharbashi.info",
       "port": "4515",
       "secret": "eee9a4f23b1d768c04a8d7f39120ca5b6e626973636f7474692e79656b74616e65742e636f6d",
       "flag": "🌐",
-      "fetchedAt": "2026-05-18T23:52:44.708Z",
-      "raw": "tg://proxy?server=dedicated.love-internet.xyz&port=4515&secret=eee9a4f23b1d768c04a8d7f39120ca5b6e626973636f7474692e79656b74616e65742e636f6d"
+      "fetchedAt": "2026-05-19T01:54:12.408Z",
+      "raw": "tg://proxy?server=alo.acharbashi.info&port=4515&secret=eee9a4f23b1d768c04a8d7f39120ca5b6e626973636f7474692e79656b74616e65742e636f6d"
     },
     {
       "type": "MTProto",
@@ -19,17 +19,8 @@
       "port": "4515",
       "secret": "eee9a4f23b1d768c04a8d7f39120ca5b6e626973636f7474692e79656b74616e65742e636f6d",
       "flag": "🌐",
-      "fetchedAt": "2026-05-18T23:52:44.708Z",
+      "fetchedAt": "2026-05-19T01:54:12.407Z",
       "raw": "tg://proxy?server=peyk.acharbashi.info&port=4515&secret=eee9a4f23b1d768c04a8d7f39120ca5b6e626973636f7474692e79656b74616e65742e636f6d"
-    },
-    {
-      "type": "MTProto",
-      "server": "alo.acharbashi.info",
-      "port": "4515",
-      "secret": "eee9a4f23b1d768c04a8d7f39120ca5b6e626973636f7474692e79656b74616e65742e636f6d",
-      "flag": "🌐",
-      "fetchedAt": "2026-05-18T23:52:44.708Z",
-      "raw": "tg://proxy?server=alo.acharbashi.info&port=4515&secret=eee9a4f23b1d768c04a8d7f39120ca5b6e626973636f7474692e79656b74616e65742e636f6d"
     },
     {
       "type": "MTProto",
@@ -37,8 +28,17 @@
       "port": "4515",
       "secret": "eee9a4f23b1d768c04a8d7f39120ca5b6e626973636f7474692e79656b74616e65742e636f6d",
       "flag": "🌐",
-      "fetchedAt": "2026-05-18T23:52:44.708Z",
+      "fetchedAt": "2026-05-19T01:54:12.407Z",
       "raw": "tg://proxy?server=gem.alotaxi.info&port=4515&secret=eee9a4f23b1d768c04a8d7f39120ca5b6e626973636f7474692e79656b74616e65742e636f6d"
+    },
+    {
+      "type": "MTProto",
+      "server": "dedicated.love-internet.xyz",
+      "port": "4515",
+      "secret": "eee9a4f23b1d768c04a8d7f39120ca5b6e626973636f7474692e79656b74616e65742e636f6d",
+      "flag": "🌐",
+      "fetchedAt": "2026-05-19T01:54:12.407Z",
+      "raw": "tg://proxy?server=dedicated.love-internet.xyz&port=4515&secret=eee9a4f23b1d768c04a8d7f39120ca5b6e626973636f7474692e79656b74616e65742e636f6d"
     }
   ],
   "source": "ProxyFree_Ru"

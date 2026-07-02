@@ -1,8 +1,8 @@
 {
   "success": true,
   "count": 12,
-  "timestamp": "2026-07-02T04:35:09.498Z",
-  "next_update": "2026-07-02T04:45:09.498Z",
+  "timestamp": "2026-07-02T07:58:01.632Z",
+  "next_update": "2026-07-02T08:08:01.632Z",
   "proxies": [
     {
       "type": "MTProto",
@@ -10,80 +10,8 @@
       "port": "8443",
       "secret": "ee9212c14bf99d751c68a80592229d677e6d656469612e737465616d706f77657265642e636f6d",
       "flag": "🌐",
-      "fetchedAt": "2026-07-02T04:35:10.242Z",
+      "fetchedAt": "2026-07-02T07:58:02.416Z",
       "raw": "tg://proxy?server=s04.neo-trading.org&port=8443&secret=ee9212c14bf99d751c68a80592229d677e6d656469612e737465616d706f77657265642e636f6d"
-    },
-    {
-      "type": "MTProto",
-      "server": "cdn6.neo-trading.org",
-      "port": "443",
-      "secret": "ee89d457f8cdb57f070701caf13a995b8a706574726f766963682e7275",
-      "flag": "🌐",
-      "fetchedAt": "2026-07-02T04:35:10.242Z",
-      "raw": "tg://proxy?server=cdn6.neo-trading.org&port=443&secret=ee89d457f8cdb57f070701caf13a995b8a706574726f766963682e7275"
-    },
-    {
-      "type": "MTProto",
-      "server": "cdn3.neo-trading.org",
-      "port": "443",
-      "secret": "eebddd26d28f5c8fd5fb3c1c5d1a57738e706574726f766963682e7275",
-      "flag": "🌐",
-      "fetchedAt": "2026-07-02T04:35:10.242Z",
-      "raw": "tg://proxy?server=cdn3.neo-trading.org&port=443&secret=eebddd26d28f5c8fd5fb3c1c5d1a57738e706574726f766963682e7275"
-    },
-    {
-      "type": "MTProto",
-      "server": "125.225.243.24",
-      "port": "4515",
-      "secret": "eee9a4f23b1d768c04a8d7f39120ca5b6e626973636f7474692e79656b74616e65742e636f6d",
-      "flag": "🌐",
-      "fetchedAt": "2026-07-02T04:35:10.242Z",
-      "raw": "tg://proxy?server=125.225.243.24&port=4515&secret=eee9a4f23b1d768c04a8d7f39120ca5b6e626973636f7474692e79656b74616e65742e636f6d"
-    },
-    {
-      "type": "MTProto",
-      "server": "s02.neo-trading.org",
-      "port": "443",
-      "secret": "ee6ec9f7e082baf2397b450727ce78447e6f7a6f6e2e7275",
-      "flag": "🌐",
-      "fetchedAt": "2026-07-02T04:35:10.242Z",
-      "raw": "tg://proxy?server=s02.neo-trading.org&port=443&secret=ee6ec9f7e082baf2397b450727ce78447e6f7a6f6e2e7275"
-    },
-    {
-      "type": "MTProto",
-      "server": "124.225.243.13",
-      "port": "4515",
-      "secret": "eee9a4f23b1d768c04a8d7f39120ca5b6e626973636f7474692e79656b74616e65742e636f6d",
-      "flag": "🌐",
-      "fetchedAt": "2026-07-02T04:35:10.241Z",
-      "raw": "tg://proxy?server=124.225.243.13&port=4515&secret=eee9a4f23b1d768c04a8d7f39120ca5b6e626973636f7474692e79656b74616e65742e636f6d"
-    },
-    {
-      "type": "MTProto",
-      "server": "144.225.243.13",
-      "port": "4515",
-      "secret": "eee9a4f23b1d768c04a8d7f39120ca5b6e626973636f7474692e79656b74616e65742e636f6d",
-      "flag": "🌐",
-      "fetchedAt": "2026-07-02T04:35:10.241Z",
-      "raw": "tg://proxy?server=144.225.243.13&port=4515&secret=eee9a4f23b1d768c04a8d7f39120ca5b6e626973636f7474692e79656b74616e65742e636f6d"
-    },
-    {
-      "type": "MTProto",
-      "server": "134.225.243.24",
-      "port": "4515",
-      "secret": "eee9a4f23b1d768c04a8d7f39120ca5b6e626973636f7474692e79656b74616e65742e636f6d",
-      "flag": "🌐",
-      "fetchedAt": "2026-07-02T04:35:10.241Z",
-      "raw": "tg://proxy?server=134.225.243.24&port=4515&secret=eee9a4f23b1d768c04a8d7f39120ca5b6e626973636f7474692e79656b74616e65742e636f6d"
-    },
-    {
-      "type": "MTProto",
-      "server": "144.225.243.24",
-      "port": "4515",
-      "secret": "eee9a4f23b1d768c04a8d7f39120ca5b6e626973636f7474692e79656b74616e65742e636f6d",
-      "flag": "🌐",
-      "fetchedAt": "2026-07-02T04:35:10.241Z",
-      "raw": "tg://proxy?server=144.225.243.24&port=4515&secret=eee9a4f23b1d768c04a8d7f39120ca5b6e626973636f7474692e79656b74616e65742e636f6d"
     },
     {
       "type": "MTProto",
@@ -91,7 +19,7 @@
       "port": "8443",
       "secret": "7nORJCVpWQ4BQWEBkn04tWVtZWRpYS5zdGVhbXBvd2VyZWQuY29t",
       "flag": "🌐",
-      "fetchedAt": "2026-07-02T04:35:10.241Z",
+      "fetchedAt": "2026-07-02T07:58:02.416Z",
       "raw": "tg://proxy?server=s01.neo-trading.org&port=8443&secret=7nORJCVpWQ4BQWEBkn04tWVtZWRpYS5zdGVhbXBvd2VyZWQuY29t"
     },
     {
@@ -100,17 +28,89 @@
       "port": "443",
       "secret": "eee90a78bc2f09b9ae56119674c98ac213706574726f766963682e7275",
       "flag": "🌐",
-      "fetchedAt": "2026-07-02T04:35:10.241Z",
+      "fetchedAt": "2026-07-02T07:58:02.416Z",
       "raw": "tg://proxy?server=cdn5.neo-trading.org&port=443&secret=eee90a78bc2f09b9ae56119674c98ac213706574726f766963682e7275"
     },
     {
       "type": "MTProto",
-      "server": "194.125.243.11",
+      "server": "cdn6.neo-trading.org",
+      "port": "443",
+      "secret": "ee89d457f8cdb57f070701caf13a995b8a706574726f766963682e7275",
+      "flag": "🌐",
+      "fetchedAt": "2026-07-02T07:58:02.416Z",
+      "raw": "tg://proxy?server=cdn6.neo-trading.org&port=443&secret=ee89d457f8cdb57f070701caf13a995b8a706574726f766963682e7275"
+    },
+    {
+      "type": "MTProto",
+      "server": "cdn3.neo-trading.org",
+      "port": "443",
+      "secret": "eebddd26d28f5c8fd5fb3c1c5d1a57738e706574726f766963682e7275",
+      "flag": "🌐",
+      "fetchedAt": "2026-07-02T07:58:02.416Z",
+      "raw": "tg://proxy?server=cdn3.neo-trading.org&port=443&secret=eebddd26d28f5c8fd5fb3c1c5d1a57738e706574726f766963682e7275"
+    },
+    {
+      "type": "MTProto",
+      "server": "125.225.243.24",
       "port": "4515",
       "secret": "eee9a4f23b1d768c04a8d7f39120ca5b6e626973636f7474692e79656b74616e65742e636f6d",
       "flag": "🌐",
-      "fetchedAt": "2026-07-02T04:35:10.240Z",
-      "raw": "tg://proxy?server=194.125.243.11&port=4515&secret=eee9a4f23b1d768c04a8d7f39120ca5b6e626973636f7474692e79656b74616e65742e636f6d"
+      "fetchedAt": "2026-07-02T07:58:02.416Z",
+      "raw": "tg://proxy?server=125.225.243.24&port=4515&secret=eee9a4f23b1d768c04a8d7f39120ca5b6e626973636f7474692e79656b74616e65742e636f6d"
+    },
+    {
+      "type": "MTProto",
+      "server": "s02.neo-trading.org",
+      "port": "443",
+      "secret": "ee6ec9f7e082baf2397b450727ce78447e6f7a6f6e2e7275",
+      "flag": "🌐",
+      "fetchedAt": "2026-07-02T07:58:02.416Z",
+      "raw": "tg://proxy?server=s02.neo-trading.org&port=443&secret=ee6ec9f7e082baf2397b450727ce78447e6f7a6f6e2e7275"
+    },
+    {
+      "type": "MTProto",
+      "server": "124.225.243.13",
+      "port": "4515",
+      "secret": "eee9a4f23b1d768c04a8d7f39120ca5b6e626973636f7474692e79656b74616e65742e636f6d",
+      "flag": "🌐",
+      "fetchedAt": "2026-07-02T07:58:02.415Z",
+      "raw": "tg://proxy?server=124.225.243.13&port=4515&secret=eee9a4f23b1d768c04a8d7f39120ca5b6e626973636f7474692e79656b74616e65742e636f6d"
+    },
+    {
+      "type": "MTProto",
+      "server": "144.225.243.13",
+      "port": "4515",
+      "secret": "eee9a4f23b1d768c04a8d7f39120ca5b6e626973636f7474692e79656b74616e65742e636f6d",
+      "flag": "🌐",
+      "fetchedAt": "2026-07-02T07:58:02.415Z",
+      "raw": "tg://proxy?server=144.225.243.13&port=4515&secret=eee9a4f23b1d768c04a8d7f39120ca5b6e626973636f7474692e79656b74616e65742e636f6d"
+    },
+    {
+      "type": "MTProto",
+      "server": "134.225.243.24",
+      "port": "4515",
+      "secret": "eee9a4f23b1d768c04a8d7f39120ca5b6e626973636f7474692e79656b74616e65742e636f6d",
+      "flag": "🌐",
+      "fetchedAt": "2026-07-02T07:58:02.415Z",
+      "raw": "tg://proxy?server=134.225.243.24&port=4515&secret=eee9a4f23b1d768c04a8d7f39120ca5b6e626973636f7474692e79656b74616e65742e636f6d"
+    },
+    {
+      "type": "MTProto",
+      "server": "144.225.243.24",
+      "port": "4515",
+      "secret": "eee9a4f23b1d768c04a8d7f39120ca5b6e626973636f7474692e79656b74616e65742e636f6d",
+      "flag": "🌐",
+      "fetchedAt": "2026-07-02T07:58:02.415Z",
+      "raw": "tg://proxy?server=144.225.243.24&port=4515&secret=eee9a4f23b1d768c04a8d7f39120ca5b6e626973636f7474692e79656b74616e65742e636f6d"
+    },
+    {
+      "type": "MTProto",
+      "server": "yc1.indigogift.fun",
+      "port": "443",
+      "secret": "ee0e61aaf45658c3ef5fc0fef90549fda67777772e636c6f7564666c6172652e636f6d",
+      "flag": "🌐",
+      "fetchedAt": "2026-07-02T07:58:02.414Z",
+      "raw": "tg://proxy?server=yc1.indigogift.fun&port=443&secret=ee0e61aaf45658c3ef5fc0fef90549fda67777772e636c6f7564666c6172652e636f6d"
     }
   ],
   "source": "ProxyFree_Ru"

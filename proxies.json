@@ -1,8 +1,8 @@
 {
   "success": false,
   "count": 12,
-  "timestamp": "2026-07-13T19:54:28.216Z",
-  "next_update": "2026-07-13T20:04:28.216Z",
+  "timestamp": "2026-07-13T20:45:09.959Z",
+  "next_update": "2026-07-13T20:55:09.959Z",
   "proxies": [
     {
       "type": "MTProto",
@@ -10,7 +10,7 @@
       "port": "443",
       "secret": "eeRighJJvXrFGRMCIMJdCQ",
       "flag": "🇳🇱",
-      "fetchedAt": "2026-07-13T19:54:28.216Z",
+      "fetchedAt": "2026-07-13T20:45:09.959Z",
       "raw": "tg://proxy?server=185.173.36.38&port=443&secret=eeRighJJvXrFGRMCIMJdCQ"
     },
     {
@@ -19,7 +19,7 @@
       "port": "8443",
       "secret": "eeNEgYdJvXrFGRMCIMJdCQ",
       "flag": "🇩",
-      "fetchedAt": "2026-07-13T19:54:28.216Z",
+      "fetchedAt": "2026-07-13T20:45:09.959Z",
       "raw": "tg://proxy?server=91.107.255.159&port=8443&secret=eeNEgYdJvXrFGRMCIMJdCQ"
     },
     {
@@ -28,7 +28,7 @@
       "port": "8443",
       "secret": "1320PuNyHw_LQKT_Y7XNJw",
       "flag": "🇫",
-      "fetchedAt": "2026-07-13T19:54:28.216Z",
+      "fetchedAt": "2026-07-13T20:45:09.959Z",
       "raw": "tg://proxy?server=65.109.153.70&port=8443&secret=1320PuNyHw_LQKT_Y7XNJw"
     },
     {
@@ -37,7 +37,7 @@
       "port": "8443",
       "secret": "eeNEgYdJvXrFGRMCIMJdCQ",
       "flag": "🇫",
-      "fetchedAt": "2026-07-13T19:54:28.216Z",
+      "fetchedAt": "2026-07-13T20:45:09.959Z",
       "raw": "tg://proxy?server=51.15.246.20&port=8443&secret=eeNEgYdJvXrFGRMCIMJdCQ"
     },
     {
@@ -46,7 +46,7 @@
       "port": "8443",
       "secret": "dd070b1b71f82167e279061e9b53f4f1",
       "flag": "🇬",
-      "fetchedAt": "2026-07-13T19:54:28.216Z",
+      "fetchedAt": "2026-07-13T20:45:09.959Z",
       "raw": "tg://proxy?server=149.154.167.91&port=8443&secret=dd070b1b71f82167e279061e9b53f4f1"
     },
     {
@@ -55,7 +55,7 @@
       "port": "8443",
       "secret": "dd070b1b71f82167e279061e9b53f4f1",
       "flag": "🇬🇧",
-      "fetchedAt": "2026-07-13T19:54:28.216Z",
+      "fetchedAt": "2026-07-13T20:45:09.959Z",
       "raw": "tg://proxy?server=149.154.167.103&port=8443&secret=dd070b1b71f82167e279061e9b53f4f1"
     },
     {
@@ -64,7 +64,7 @@
       "port": "8443",
       "secret": "dd070b1b71f82167e279061e9b53f4f1",
       "flag": "🇬🇧",
-      "fetchedAt": "2026-07-13T19:54:28.216Z",
+      "fetchedAt": "2026-07-13T20:45:09.959Z",
       "raw": "tg://proxy?server=149.154.167.92&port=8443&secret=dd070b1b71f82167e279061e9b53f4f1"
     },
     {
@@ -73,7 +73,7 @@
       "port": "8443",
       "secret": "dd070b1b71f82167e279061e9b53f4f1",
       "flag": "🇬🇧",
-      "fetchedAt": "2026-07-13T19:54:28.216Z",
+      "fetchedAt": "2026-07-13T20:45:09.959Z",
       "raw": "tg://proxy?server=149.154.167.100&port=8443&secret=dd070b1b71f82167e279061e9b53f4f1"
     },
     {
@@ -82,7 +82,7 @@
       "port": "8443",
       "secret": "dd070b1b71f82167e279061e9b53f4f1",
       "flag": "🇬🇧",
-      "fetchedAt": "2026-07-13T19:54:28.216Z",
+      "fetchedAt": "2026-07-13T20:45:09.959Z",
       "raw": "tg://proxy?server=149.154.171.100&port=8443&secret=dd070b1b71f82167e279061e9b53f4f1"
     },
     {
@@ -91,7 +91,7 @@
       "port": "8443",
       "secret": "dd070b1b71f82167e279061e9b53f4f1",
       "flag": "🇬🇧",
-      "fetchedAt": "2026-07-13T19:54:28.216Z",
+      "fetchedAt": "2026-07-13T20:45:09.959Z",
       "raw": "tg://proxy?server=149.154.175.100&port=8443&secret=dd070b1b71f82167e279061e9b53f4f1"
     },
     {
@@ -100,7 +100,7 @@
       "port": "8443",
       "secret": "dd070b1b71f82167e279061e9b53f4f1",
       "flag": "🇬🇧",
-      "fetchedAt": "2026-07-13T19:54:28.216Z",
+      "fetchedAt": "2026-07-13T20:45:09.959Z",
       "raw": "tg://proxy?server=149.154.175.102&port=8443&secret=dd070b1b71f82167e279061e9b53f4f1"
     },
     {
@@ -109,7 +109,7 @@
       "port": "8443",
       "secret": "dd070b1b71f82167e279061e9b53f4f1",
       "flag": "🇬🇧",
-      "fetchedAt": "2026-07-13T19:54:28.216Z",
+      "fetchedAt": "2026-07-13T20:45:09.959Z",
       "raw": "tg://proxy?server=149.154.167.200&port=8443&secret=dd070b1b71f82167e279061e9b53f4f1"
     }
   ],

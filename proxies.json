@@ -1,8 +1,8 @@
 {
   "success": true,
   "count": 10,
-  "timestamp": "2026-10-09T19:05:01.174Z",
-  "next_update": "2026-10-09T19:15:01.174Z",
+  "timestamp": "2026-10-09T23:20:17.949Z",
+  "next_update": "2026-10-09T23:30:17.949Z",
   "proxies": [
     {
       "type": "MTProto",
@@ -10,17 +10,8 @@
       "port": "4515",
       "secret": "eee9a4f23b1d768c04a8d7f39120ca5b6e626973636f7474692e79656b74616e65742e636f6d",
       "flag": "🌐",
-      "fetchedAt": "2026-10-09T19:05:01.987Z",
+      "fetchedAt": "2026-10-09T23:20:18.937Z",
       "raw": "tg://proxy?server=fast.love-internet.xyz&port=4515&secret=eee9a4f23b1d768c04a8d7f39120ca5b6e626973636f7474692e79656b74616e65742e636f6d"
-    },
-    {
-      "type": "MTProto",
-      "server": "alo.acharbashi.info",
-      "port": "4515",
-      "secret": "eee9a4f23b1d768c04a8d7f39120ca5b6e626973636f7474692e79656b74616e65742e636f6d",
-      "flag": "🌐",
-      "fetchedAt": "2026-10-09T19:05:01.987Z",
-      "raw": "tg://proxy?server=alo.acharbashi.info&port=4515&secret=eee9a4f23b1d768c04a8d7f39120ca5b6e626973636f7474692e79656b74616e65742e636f6d"
     },
     {
       "type": "MTProto",
@@ -28,44 +19,17 @@
       "port": "4515",
       "secret": "eee9a4f23b1d768c04a8d7f39120ca5b6e6d61782e7275",
       "flag": "🌐",
-      "fetchedAt": "2026-10-09T19:05:01.986Z",
+      "fetchedAt": "2026-10-09T23:20:18.936Z",
       "raw": "tg://proxy?server=super.alotaxi.info&port=4515&secret=eee9a4f23b1d768c04a8d7f39120ca5b6e6d61782e7275"
     },
     {
       "type": "MTProto",
-      "server": "144.27.87.6",
-      "port": "7866",
-      "secret": "ee65e6f227d8f1607d4df6c44ce9c0f56d6d656469612e737465616d706f77657265642e636f6d",
-      "flag": "🌐",
-      "fetchedAt": "2026-10-09T19:05:01.985Z",
-      "raw": "tg://proxy?server=144.27.87.6&port=7866&secret=ee65e6f227d8f1607d4df6c44ce9c0f56d6d656469612e737465616d706f77657265642e636f6d"
-    },
-    {
-      "type": "MTProto",
-      "server": "2.27.87.6",
-      "port": "7866",
-      "secret": "ee65e6f227d8f1607d4df6c44ce9c0f56d6d656469612e737465616d706f77657265642e636f6d",
-      "flag": "🌐",
-      "fetchedAt": "2026-10-09T19:05:01.985Z",
-      "raw": "tg://proxy?server=2.27.87.6&port=7866&secret=ee65e6f227d8f1607d4df6c44ce9c0f56d6d656469612e737465616d706f77657265642e636f6d"
-    },
-    {
-      "type": "MTProto",
-      "server": "13.141.56.239",
+      "server": "alo.acharbashi.info",
       "port": "4515",
       "secret": "eee9a4f23b1d768c04a8d7f39120ca5b6e626973636f7474692e79656b74616e65742e636f6d",
       "flag": "🌐",
-      "fetchedAt": "2026-10-09T19:05:01.985Z",
-      "raw": "tg://proxy?server=13.141.56.239&port=4515&secret=eee9a4f23b1d768c04a8d7f39120ca5b6e626973636f7474692e79656b74616e65742e636f6d"
-    },
-    {
-      "type": "MTProto",
-      "server": "227.15.156.50",
-      "port": "7866",
-      "secret": "eef56a96537bf96aef803a831d7502e4f06d656469612e737465616d706f77657265642e636f6d",
-      "flag": "🌐",
-      "fetchedAt": "2026-10-09T19:05:01.984Z",
-      "raw": "tg://proxy?server=227.15.156.50&port=7866&secret=eef56a96537bf96aef803a831d7502e4f06d656469612e737465616d706f77657265642e636f6d"
+      "fetchedAt": "2026-10-09T23:20:18.936Z",
+      "raw": "tg://proxy?server=alo.acharbashi.info&port=4515&secret=eee9a4f23b1d768c04a8d7f39120ca5b6e626973636f7474692e79656b74616e65742e636f6d"
     },
     {
       "type": "MTProto",
@@ -73,7 +37,7 @@
       "port": "7866",
       "secret": "eef56a96537bf96aef803a831d7502e4f06d656469612e737465616d706f77657265642e636f6d",
       "flag": "🌐",
-      "fetchedAt": "2026-10-09T19:05:01.984Z",
+      "fetchedAt": "2026-10-09T23:20:18.935Z",
       "raw": "tg://proxy?server=217.144.156.50&port=7866&secret=eef56a96537bf96aef803a831d7502e4f06d656469612e737465616d706f77657265642e636f6d"
     },
     {
@@ -82,7 +46,7 @@
       "port": "7866",
       "secret": "eee9a4f23b1d768c04a8d7f39120ca5b6e6d656469612e737465616d706f77657265642e636f6d",
       "flag": "🌐",
-      "fetchedAt": "2026-10-09T19:05:01.984Z",
+      "fetchedAt": "2026-10-09T23:20:18.935Z",
       "raw": "tg://proxy?server=122.27.87.3&port=7866&secret=eee9a4f23b1d768c04a8d7f39120ca5b6e6d656469612e737465616d706f77657265642e636f6d"
     },
     {
@@ -91,8 +55,44 @@
       "port": "7866",
       "secret": "eee9a4f23b1d768c04a8d7f39120ca5b6e6d656469612e737465616d706f77657265642e636f6d",
       "flag": "🌐",
-      "fetchedAt": "2026-10-09T19:05:01.984Z",
+      "fetchedAt": "2026-10-09T23:20:18.935Z",
       "raw": "tg://proxy?server=2.27.87.3&port=7866&secret=eee9a4f23b1d768c04a8d7f39120ca5b6e6d656469612e737465616d706f77657265642e636f6d"
+    },
+    {
+      "type": "MTProto",
+      "server": "144.27.87.6",
+      "port": "7866",
+      "secret": "ee65e6f227d8f1607d4df6c44ce9c0f56d6d656469612e737465616d706f77657265642e636f6d",
+      "flag": "🌐",
+      "fetchedAt": "2026-10-09T23:20:18.935Z",
+      "raw": "tg://proxy?server=144.27.87.6&port=7866&secret=ee65e6f227d8f1607d4df6c44ce9c0f56d6d656469612e737465616d706f77657265642e636f6d"
+    },
+    {
+      "type": "MTProto",
+      "server": "2.27.87.6",
+      "port": "7866",
+      "secret": "ee65e6f227d8f1607d4df6c44ce9c0f56d6d656469612e737465616d706f77657265642e636f6d",
+      "flag": "🌐",
+      "fetchedAt": "2026-10-09T23:20:18.935Z",
+      "raw": "tg://proxy?server=2.27.87.6&port=7866&secret=ee65e6f227d8f1607d4df6c44ce9c0f56d6d656469612e737465616d706f77657265642e636f6d"
+    },
+    {
+      "type": "MTProto",
+      "server": "13.141.56.239",
+      "port": "4515",
+      "secret": "eee9a4f23b1d768c04a8d7f39120ca5b6e626973636f7474692e79656b74616e65742e636f6d",
+      "flag": "🌐",
+      "fetchedAt": "2026-10-09T23:20:18.935Z",
+      "raw": "tg://proxy?server=13.141.56.239&port=4515&secret=eee9a4f23b1d768c04a8d7f39120ca5b6e626973636f7474692e79656b74616e65742e636f6d"
+    },
+    {
+      "type": "MTProto",
+      "server": "227.15.156.50",
+      "port": "7866",
+      "secret": "eef56a96537bf96aef803a831d7502e4f06d656469612e737465616d706f77657265642e636f6d",
+      "flag": "🌐",
+      "fetchedAt": "2026-10-09T23:20:18.934Z",
+      "raw": "tg://proxy?server=227.15.156.50&port=7866&secret=eef56a96537bf96aef803a831d7502e4f06d656469612e737465616d706f77657265642e636f6d"
     }
   ],
   "source": "ProxyFree_Ru"

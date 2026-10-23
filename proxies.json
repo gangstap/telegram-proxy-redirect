@@ -1,8 +1,8 @@
 {
   "success": true,
   "count": 3,
-  "timestamp": "2026-10-23T06:06:12.489Z",
-  "next_update": "2026-10-23T06:16:12.489Z",
+  "timestamp": "2026-10-23T11:51:28.564Z",
+  "next_update": "2026-10-23T12:01:28.564Z",
   "proxies": [
     {
       "type": "MTProto",
@@ -10,7 +10,7 @@
       "port": "4515",
       "secret": "eee9a4f23b1d768c04a8d7f39120ca5b6e626973636f7474692e79656b74616e65742e636f6d",
       "flag": "🌐",
-      "fetchedAt": "2026-10-23T06:06:13.158Z",
+      "fetchedAt": "2026-10-23T11:51:29.186Z",
       "raw": "tg://proxy?server=russia.knox-proxy.world&port=4515&secret=eee9a4f23b1d768c04a8d7f39120ca5b6e626973636f7474692e79656b74616e65742e636f6d"
     },
     {
@@ -19,7 +19,7 @@
       "port": "4515",
       "secret": "eee9a4f23b1d768c04a8d7f39120ca5b6e626973636f7474692e79656b74616e65742e636f6d",
       "flag": "🌐",
-      "fetchedAt": "2026-10-23T06:06:13.157Z",
+      "fetchedAt": "2026-10-23T11:51:29.185Z",
       "raw": "tg://proxy?server=fast.love-internet.xyz&port=4515&secret=eee9a4f23b1d768c04a8d7f39120ca5b6e626973636f7474692e79656b74616e65742e636f6d"
     },
     {
@@ -28,7 +28,7 @@
       "port": "4515",
       "secret": "eee9a4f23b1d768c04a8d7f39120ca5b6e626973636f7474692e79656b74616e65742e636f6d",
       "flag": "🌐",
-      "fetchedAt": "2026-10-23T06:06:13.156Z",
+      "fetchedAt": "2026-10-23T11:51:29.183Z",
       "raw": "tg://proxy?server=alo.acharbashi.info&port=4515&secret=eee9a4f23b1d768c04a8d7f39120ca5b6e626973636f7474692e79656b74616e65742e636f6d"
     }
   ],
